@@ -23,6 +23,18 @@ export const getGroups = async () => {
   return api.get("/getGroups");
 };
 
+export const deleteGroup = async (groupId) => {
+  return api.delete(`/deleteGroup/${groupId}`);
+}
+
+export const updateGroup = async (editingGroupId, editedGroup) => {
+  return api.put(`/updateGroup/${editingGroupId}`, editedGroup);
+}
+
+export const insertGroup = async (formData) => {
+  return api.post("/insertGroup", {formData});
+}
+
 export const insertIdeia = async (formData) => {
   console.log(formData)
     return api.post("/insertIdeia", {formData});

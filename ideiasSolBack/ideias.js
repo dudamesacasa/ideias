@@ -98,7 +98,10 @@ router.delete("/:ideiaId", (req, res) => {
       console.log(err);
       return res.status(500).send("Erro interno do servidor");
     }
-  });
+    else {
+      res.json(result);
+    }
+  }); 
 }); 
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import { getIdeias } from "../../services/api";
 import { deleteIdeia } from "../../services/api";
@@ -49,13 +49,26 @@ const IdeiasList = () => {
     })();
   }, []);
 
+  const fetchData = async () => {
+    try {
+      const response = await getIdeias();
+      if (response.status === 200) {
+        setIdeiasList(response.data);
+      } else {
+        console.error("Erro ao buscar ideias");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar ideias", error);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
     setEditedData({ ...editedData, [name]: value });
 
-    console.log("editedData.performer_id");
-    console.log(editedData.performer_id);
+    // console.log("editedData.performer_id");
+    // console.log(editedData.performer_id);
   };
 
   const handleDelete = async (ideiaId) => {
@@ -63,10 +76,12 @@ const IdeiasList = () => {
       const response = await deleteIdeia(ideiaId);
       if (response.status === 200) {
         setIdeiasList(ideiasList.filter((val) => val.ideiaId !== ideiaId));
+        fetchData();
       }
     } catch (error) {
       console.error(error);
       setError("Erro ao deletar ideia!");
+      alert('Erro ao deletar ideia!')
     }
   };
 
@@ -100,6 +115,7 @@ const IdeiasList = () => {
 
       if (response.status === 200) {
         setEditingIdeiaId(null);
+        fetchData();
       }
     } catch (error) {
       console.error(error);
@@ -113,9 +129,7 @@ const IdeiasList = () => {
   };
 
   const handleDetails = (ideiaId) => {
-    return (
-      <Link to={`IdeiaDetail/${ideiaId}`} />
-    );
+    return <Link to={`IdeiaDetail/${ideiaId}`} />;
   };
 
   return (

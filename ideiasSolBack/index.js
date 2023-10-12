@@ -27,6 +27,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/getDepartments", departmentsRouter);
 
 app.use("/getGroups", groupsRouter);
+app.use("/insertGroup", groupsRouter);
+app.use("/deleteGroup", groupsRouter);
+app.use("/updateGroup", groupsRouter);
 
 app.use("/insertIdeia", ideiasRouter); 
 app.use("/getIdeias", ideiasRouter);
@@ -37,6 +40,8 @@ app.use("/insertEmployee", employeeRouter);
 app.use("/getEmployee", employeeRouter);
 app.use("/deleteEmployee", employeeRouter);
 app.use("/updateEmployee", employeeRouter);
+
+
 
 
 db.connect((err) => {

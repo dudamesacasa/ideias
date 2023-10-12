@@ -42,7 +42,6 @@ const EmployeeList = () => {
     fetchDepartments();
   }, []);
 
-
   const fetchData = async () => {
     try {
       const response = await getEmployee();
@@ -55,7 +54,6 @@ const EmployeeList = () => {
       console.error("Erro ao buscar funcionários", error);
     }
   };
-
 
   const handleEdit = (employeeId) => {
     setEditingEmployeeId(employeeId);
@@ -74,15 +72,13 @@ const EmployeeList = () => {
     }
   };
 
-
-
   const handleSave = async () => {
     try {
       const response = await updateEmployee(editingEmployeeId, editedEmployee);
 
       if (response.status === 200) {
         setEditingEmployeeId(null);
-        
+
         fetchData();
       } else {
         console.error("Erro ao editar funcionário");
@@ -97,13 +93,12 @@ const EmployeeList = () => {
   };
 
   const handleDelete = async (employeeId) => {
-
-    console.log('handleDelete')
+    console.log("handleDelete");
     try {
       const response = await deleteEmployee(employeeId);
 
       if (response.status === 200) {
-        alert('Funcionário excluído com sucesso!');
+        alert("Funcionário excluído com sucesso!");
 
         fetchData();
       } else {
