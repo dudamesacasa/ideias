@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getGroups, updateGroup, deleteGroup } from "../../services/api"; // Importe as funções apropriadas para grupos
+import { getGroups, updateGroup, deleteGroup } from "../../services/api"; 
 
 const GroupsList = () => {
   const [groups, setGroups] = useState([]);
@@ -150,7 +150,6 @@ const GroupsList = () => {
                   group.email
                 )}
               </td>
-              <td>{/* Aqui você pode exibir o avatar, se aplicável */}</td>
               <td>{group.active ? "Ativo" : "Inativo"}</td>
               <td>
                 {editingGroupId === group.groupId ? (

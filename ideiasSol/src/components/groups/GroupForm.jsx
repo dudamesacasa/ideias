@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { insertGroup } from "../../services/api"; // Substitua pelo serviço real que lida com a inserção de grupos
+import { insertGroup } from "../../services/api"; 
 
 const GroupForm = () => {
   const [formData, setFormData] = useState({
@@ -7,7 +7,7 @@ const GroupForm = () => {
     departmentId: "",
     email: "",
     avatar: null,
-    active: true, // Pode definir um valor padrão
+    active: true, 
   });
 
   const handleChange = (e) => {
@@ -22,7 +22,7 @@ const GroupForm = () => {
 
   const handleInsertGroup = async () => {
     try {
-      const response = await insertGroup(formData); // Substitua pela função real que envia a solicitação para o backend
+      const response = await insertGroup(formData); 
       if (response.status === 200) {
         alert("Grupo inserido com sucesso!");
 
