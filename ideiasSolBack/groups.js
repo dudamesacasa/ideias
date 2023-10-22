@@ -11,7 +11,7 @@ const db = mysql.createConnection({
 });
 
 router.get("/", (req, res) => {
-  const sql = "SELECT name, groupId, departmentId, email, active FROM groupSol";
+  const sql = "SELECT groupSol.name, groupSol.groupId, department.name as depName, groupSol.email, groupSol.avatar, groupSol.active FROM groupSol join department on department.departmentID = groupSol.departmentid";
   db.query(sql, (err, results) => {
     if (err) {
       console.error("Erro ao buscar grupos:", err);
@@ -25,6 +25,8 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const formData = req.body.formData;
   const data = Object.values(formData);
+
+  console.log(data)
 
   const sqlInsertGroups = "INSERT INTO groupSol (name, departmentId, email, avatar, active) values (?)";
   db.query(sqlInsertGroups, [data], (err, results) => {

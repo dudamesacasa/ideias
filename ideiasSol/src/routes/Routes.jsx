@@ -10,6 +10,8 @@ import EmployeeForm from "../components/employees/EmployeeForm";
 import IdeiaDetail from "../components/ideias/IdeiasDetails";
 import GroupsList from "../components/groups/GroupsList";
 import GroupForm from "../components/groups/GroupForm";
+import DepartmentForm from "../components/departments/DepartmentsForm";
+import DepartmentsList from "../components/departments/DepartmentsList";
 
 const AppRoutes = () => {
   const Private = ({ children }) => {
@@ -36,11 +38,8 @@ const AppRoutes = () => {
           <Route path="/employeeList" element={<EmployeeList />}></Route>
           <Route path="/listGroups" element={<GroupsList />}></Route>
           <Route path="/insertGroups" element={<GroupForm />}></Route>
-
-
-
-
-          
+          <Route path="/insertDepartment" element={<DepartmentForm />}></Route>
+          <Route path="/listDepartments" element={<DepartmentsList />}></Route>          
         </Routes>
       </AuthProvider>
     </Router>

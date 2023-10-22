@@ -19,6 +19,18 @@ export const getDepartments = async () => {
   return api.get("/getDepartments");
 };
 
+export const deleteDepartment = async (departmentId) => {
+  return api.delete(`/deleteDepartment/${departmentId}`);
+}
+
+export const updateDepartment = async (editingDepartmentId, editedDepartment) => {
+  return api.put(`/updateDepartment/${editingDepartmentId}`, editedDepartment);
+}
+
+export const insertDepartment = async (formData) => {
+  return api.post("/insertDepartment", {formData});
+}
+
 export const getGroups = async () => {
   return api.get("/getGroups");
 };

@@ -25,6 +25,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // middlewares
 app.use("/getDepartments", departmentsRouter);
+app.use("/insertDepartment", departmentsRouter);
+app.use("/deleteDepartment", departmentsRouter);
+app.use("/updateDepartment", departmentsRouter);
 
 app.use("/getGroups", groupsRouter);
 app.use("/insertGroup", groupsRouter);

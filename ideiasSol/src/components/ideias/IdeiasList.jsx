@@ -179,7 +179,6 @@ const IdeiasList = () => {
                         className="form-control"
                       />
                       <br />
-
                       <label htmlFor="editedPerformer_id">Quem vai fazer</label>
                       <select
                         onChange={handleChange}

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getGroups, updateGroup, deleteGroup } from "../../services/api"; 
+import { getGroups, updateGroup, deleteGroup } from "../../services/api";
+import { getDepartments } from "../../services/api";
 
 const GroupsList = () => {
   const [groups, setGroups] = useState([]);
   const [editingGroupId, setEditingGroupId] = useState(null);
+  const [departmentList, setDepartmentList] = useState([]);
   const [editedGroup, setEditedGroup] = useState({
     name: "",
     departmentId: "",
@@ -28,6 +30,11 @@ const GroupsList = () => {
     };
 
     fetchData();
+
+    (async () => {
+      const response = await getDepartments();
+      setDepartmentList(response.data);
+    })();
   }, []);
 
   const fetchData = async () => {
@@ -61,15 +68,14 @@ const GroupsList = () => {
 
   const handleSave = async () => {
     try {
-      const response = await updateGroup(editingGroupId, { 
-        editedGroup 
-    });
+      const response = await updateGroup(editingGroupId, {
+        editedGroup,
+      });
 
       if (response.status === 200) {
         setEditingGroupId(null);
         fetchData();
-      } 
-      else {
+      } else {
         console.error("Erro ao editar grupo");
       }
     } catch (error) {
@@ -123,6 +129,7 @@ const GroupsList = () => {
                     type="text"
                     value={editedGroup.name}
                     onChange={(e) => setEditedGroup({ ...editedGroup, name: e.target.value })}
+                    className="form-control"
                   />
                 ) : (
                   group.name
@@ -130,13 +137,22 @@ const GroupsList = () => {
               </td>
               <td>
                 {editingGroupId === group.groupId ? (
-                  <input
-                    type="text"
-                    value={editedGroup.departmentId}
+                  <select
                     onChange={(e) => setEditedGroup({ ...editedGroup, departmentId: e.target.value })}
-                  />
+                    name="departmentId"
+                    id="departmentId"
+                    value={editedGroup.departmentId}
+                    className="form-control"
+                  >
+                    <option value="">Selecione um departamento</option>
+                    {departmentList.map((department) => (
+                      <option key={department.departmentId} value={department.departmentId}>
+                        {department.name}
+                      </option>
+                    ))}
+                  </select>
                 ) : (
-                  group.departmentId
+                  group.depName
                 )}
               </td>
               <td>
@@ -145,9 +161,22 @@ const GroupsList = () => {
                     type="text"
                     value={editedGroup.email}
                     onChange={(e) => setEditedGroup({ ...editedGroup, email: e.target.value })}
+                    className="form-control"
                   />
                 ) : (
                   group.email
+                )}
+              </td>
+              <td>
+                {editingGroupId === group.groupId ? (
+                  <input
+                    type="text"
+                    value={editedGroup.avatar}
+                    onChange={(e) => setEditedGroup({ ...editedGroup, avatar: e.target.value })}
+                    className="form-control"
+                  />
+                ) : (
+                  group.avatar
                 )}
               </td>
               <td>{group.active ? "Ativo" : "Inativo"}</td>

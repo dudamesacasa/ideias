@@ -56,11 +56,11 @@ router.put("/:editingEmployeeId", (req, res) => {
  
 router.get("/", (req, res) => {
   const sqlSelect =
-    //"SELECT name, document, departmentId, groupId, active, type FROM employee join department on department.departmentId = employee.departmentId;";
-    "SELECT * FROM employee ";
+    "SELECT employee.employeeId, employee.name, employee.document, department.name as depName, groupSol.name as groupName, employee.active, employee.type FROM employee join department on department.departmentId = employee.departmentId join groupSol on groupSol.groupId = employee.groupId order by employee.employeeId;";
 
   db.query(sqlSelect, (err, result) => {
     if (err) {
+      console.log(err)
       res.status(500).json({ error: "Erro ao buscar funcionários" });
     } else {
       res.json(result);

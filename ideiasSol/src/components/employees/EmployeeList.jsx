@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getEmployee, updateEmployee, deleteEmployee } from "../../services/api";
+import { getEmployee, updateEmployee, deleteEmployee, getGroups } from "../../services/api";
 import { getDepartments } from "../../services/api";
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
+  const [groupsList, setGroupsList] = useState([]);
   const [editingEmployeeId, setEditingEmployeeId] = useState(null);
   const [editedEmployee, setEditedEmployee] = useState({
     name: "",
@@ -31,6 +32,17 @@ const EmployeeList = () => {
     };
 
     fetchData();
+
+    (async () => {
+      const response = await getDepartments();
+      setDepartmentList(response.data);
+    })();
+
+    (async () => {
+      const response = await getGroups();
+      setGroupsList(response.data);
+
+    })();
   }, []);
 
   useEffect(() => {
@@ -136,6 +148,7 @@ const EmployeeList = () => {
                     type="text"
                     value={editedEmployee.name}
                     onChange={(e) => setEditedEmployee({ ...editedEmployee, name: e.target.value })}
+                    className="form-control"
                   />
                 ) : (
                   employee.name
@@ -147,6 +160,7 @@ const EmployeeList = () => {
                     type="text"
                     value={editedEmployee.document}
                     onChange={(e) => setEditedEmployee({ ...editedEmployee, document: e.target.value })}
+                    className="form-control"
                   />
                 ) : (
                   employee.document
@@ -154,24 +168,43 @@ const EmployeeList = () => {
               </td>
               <td>
                 {editingEmployeeId === employee.employeeId ? (
-                  <input
-                    type="text"
-                    value={editedEmployee.departmentId}
+                  <select
                     onChange={(e) => setEditedEmployee({ ...editedEmployee, departmentId: e.target.value })}
-                  />
+                    name="departmentId"
+                    id="departmentId"
+                    value={editedEmployee.departmentId}
+                    className="form-control"
+                  >
+                    <option value="">Selecione um departamento</option>
+                    {departmentList.map((department) => (
+                      <option key={department.departmentId} value={department.departmentId}>
+                        {department.name}
+                      </option>
+                    ))}
+                  </select>
+                  
                 ) : (
-                  employee.departmentId
+                  employee.depName
                 )}
               </td>
               <td>
                 {editingEmployeeId === employee.employeeId ? (
-                  <input
-                    type="text"
-                    value={editedEmployee.groupId}
-                    onChange={(e) => setEditedEmployee({ ...editedEmployee, groupId: e.target.value })}
-                  />
+                  <select
+                  onChange={(e) => setEditedEmployee({ ...editedEmployee, groupId: e.target.value })}
+                  name="groupId"
+                  id="groupId"
+                  value={editedEmployee.groupId}
+                  className="form-control"
+                >
+                  <option value="">Selecione um grupo</option>
+                  {groupsList.map((groups) => (
+                    <option key={groups.groupId} value={groups.groupId}>
+                      {groups.name}
+                    </option>
+                  ))}
+                </select>
                 ) : (
-                  employee.groupId
+                  employee.groupName
                 )}
               </td>
               <td>{employee.active ? "Ativo" : "Inativo"}</td>
@@ -181,6 +214,7 @@ const EmployeeList = () => {
                     type="text"
                     value={editedEmployee.type}
                     onChange={(e) => setEditedEmployee({ ...editedEmployee, type: e.target.value })}
+                    className="form-control"
                   />
                 ) : (
                   employee.type
