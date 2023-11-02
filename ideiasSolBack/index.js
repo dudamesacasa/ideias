@@ -9,6 +9,7 @@ const departmentsRouter = require("./departments.js");
 const ideiasRouter = require("./ideias.js");
 const employeeRouter = require("./employees.js")
 const groupsRouter = require("./groups.js"); 
+const usersRouter = require("./users.js");
 
 const app = express();
 
@@ -44,8 +45,10 @@ app.use("/getEmployee", employeeRouter);
 app.use("/deleteEmployee", employeeRouter);
 app.use("/updateEmployee", employeeRouter);
 
-
-
+app.use("/insertUser", usersRouter);
+app.use("/getUsers", usersRouter);
+app.use("/deleteUser", usersRouter);
+app.use("/updateUser", usersRouter);
 
 db.connect((err) => {
   if (err) {

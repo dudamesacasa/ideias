@@ -86,3 +86,19 @@ export const updateEmployee = async (editingEmployeeId, editedEmployee) => {
   return api.put(`/updateEmployee/${editingEmployeeId}`, editedEmployee);
 }
 
+export const insertUser = async (formData) => {
+  console.log(formData)
+    return api.post("/insertUser", {formData});
+}
+
+export const getUsers = async () => {
+  return api.get("/getUsers");
+};
+
+export const deleteUser = async (UsersId) => {
+  return api.delete(`/deleteUser/${UsersId}`);
+}
+
+export const updateUser = async (editingUserId, editedUser) => {
+  return api.put(`/updateUser/${editingUserId}`, editedUser);
+}

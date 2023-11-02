@@ -12,6 +12,8 @@ import GroupsList from "../components/groups/GroupsList";
 import GroupForm from "../components/groups/GroupForm";
 import DepartmentForm from "../components/departments/DepartmentsForm";
 import DepartmentsList from "../components/departments/DepartmentsList";
+import UsersForm from "../components/users/UsersForm";
+import UsersList from "../components/users/UsersList";
 
 const AppRoutes = () => {
   const Private = ({ children }) => {
@@ -39,7 +41,9 @@ const AppRoutes = () => {
           <Route path="/listGroups" element={<GroupsList />}></Route>
           <Route path="/insertGroups" element={<GroupForm />}></Route>
           <Route path="/insertDepartment" element={<DepartmentForm />}></Route>
-          <Route path="/listDepartments" element={<DepartmentsList />}></Route>          
+          <Route path="/listDepartments" element={<DepartmentsList />}></Route>     
+          <Route path="/usersForm" element={<UsersForm />}></Route>     
+          <Route path="/usersList" element={<UsersList />}></Route>     
         </Routes>
       </AuthProvider>
     </Router>
