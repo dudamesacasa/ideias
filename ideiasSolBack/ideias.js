@@ -13,6 +13,8 @@ router.post("/", (req, res) => {
   const formData = req.body.formData;
   const data = Object.values(formData);
 
+  console.log(data)
+
   /*adicionar validação anexos */
 
   const sqlInsertIdeia =
@@ -31,8 +33,10 @@ router.put("/:editingIdeiaId", (req, res) => {
   const ideiaId = req.params.editingIdeiaId;
   const editedData = req.body.editedData;
 
+  console.log(editedData)
+
   const sqlUpdateIdeia =
-    'UPDATE ideias SET campaign = ?, status = ?, description = ?, benefits = ?, whereToDo = ?, investment = ?, attachments = ?  WHERE ideiaId = ?';
+    'UPDATE ideias SET campaign = ?, status = ?, description = ?, benefits = ?, whereToDo = ?, performer_id = ?, investment = ?, attachments = ?  WHERE ideiaId = ?';
 
   db.query(
     sqlUpdateIdeia,
@@ -42,9 +46,10 @@ router.put("/:editingIdeiaId", (req, res) => {
       editedData.description,
       editedData.benefits,
       editedData.whereToDo,
+      editedData.performer_id,
       editedData.investment,
       editedData.attachments,
-      ideiaId,
+      ideiaId, 
     ],
     (err, result) => {
       if (err) {
