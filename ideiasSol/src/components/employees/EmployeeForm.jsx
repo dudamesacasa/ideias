@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { getDepartments } from "../../services/api";
 import { getGroups } from "../../services/api";
 import { insertEmployee } from "../../services/api";
+import Select from "react-select";
 
 const EmployeeForm = () => {
   const [departmentList, setDepartmentList] = useState([]);
   const [groupList, setGroupList] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+
 
   const [loading, setLoading] = useState(true);
 
@@ -21,6 +25,14 @@ const EmployeeForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleChangeDepartment = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   useEffect(() => {
@@ -57,12 +69,24 @@ const EmployeeForm = () => {
           active: true,
           type: "",
         });
+
+        setSelectedDepartment(null);
+        setSelectedGroup(null);
       }
     } catch (error) {
       console.error(error);
       setError("Erro ao inserir funcionário!");
     }
   };
+
+  const optionsDepartments = departmentList.map((department) => ({
+    value: department.departmentId,
+    label: department.name,
+  }));
+  const optionsGroups = groupList.map((group) => ({
+    value: group.groupId,
+    label: group.name,
+  }));
 
   //   if (loading) {
   //     return <div>Loading...</div>
@@ -98,48 +122,32 @@ const EmployeeForm = () => {
         </div>
         <div className="form-group">
           <label htmlFor="departmentId">Departamento:</label>
-          <select
+          
+          <Select
             name="departmentId"
             id="departmentId"
-            className="form-control"
-            value={formData.departmentId}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Selecione um departamento</option>
-            {departmentList.map((department) => (
-              <option key={department.departmentId} value={department.departmentId}>
-                {department.name}
-              </option>
-            ))}
-          </select>
+            value={selectedDepartment}
+            onChange={(selectedOption) => {
+              setSelectedDepartment(selectedOption);
+              setFormData({ ...formData, departmentId: selectedOption.value });
+            }}
+            options={optionsDepartments}
+            isSearchable
+          />
         </div>
         <div className="form-group">
           <label htmlFor="groupId">Grupo:</label>
-          {/* <input
-            type="text"
+          <Select
             name="groupId"
             id="groupId"
-            className="form-control"
-            value={formData.groupId}
-            onChange={handleChange}
-            required
-          /> */}
-          <select
-            name="groupId"
-            id="groupId"
-            className="form-control"
-            value={formData.groupId}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Selecione um grupo</option>
-            {groupList.map((group) => (
-              <option key={group.groupId} value={group.groupId}>
-                {group.name}
-              </option>
-            ))}
-          </select>
+            value={selectedGroup}
+            onChange={(selectedOption) => {
+              setSelectedGroup(selectedOption);
+              setFormData({ ...formData, groupId: selectedOption.value });
+            }}
+            options={optionsGroups}
+            isSearchable
+          />
         </div>
         <div className="form-check">
           <input

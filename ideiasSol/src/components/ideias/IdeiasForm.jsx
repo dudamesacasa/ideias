@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getDepartments } from "../../services/api";
 import { insertIdeia } from "../../services/api";
+import Select from "react-select";
 
 const IdeiaForm = () => {
   const [formData, setFormData] = useState({
@@ -13,17 +14,26 @@ const IdeiaForm = () => {
   });
   const [departmentList, setDepartmentList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPerformer, setSelectedPerformer] = useState(null);
+
+  // const handleChange = (e) => {
+  //   const { name, value, type, checked, files } = e.target;
+
+  //   if (type === "file") {
+  //     setFormData({ ...formData, [name]: files[0] });
+  //   } else if (type === "checkbox") {
+  //     setFormData({ ...formData, [name]: checked });
+  //   } else {
+  //     setFormData({ ...formData, [name]: value });
+  //   }
+  // };
 
   const handleChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
-
-    if (type === "file") {
-      setFormData({ ...formData, [name]: files[0] });
-    } else if (type === "checkbox") {
-      setFormData({ ...formData, [name]: checked });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   useEffect(() => {
@@ -36,31 +46,37 @@ const IdeiaForm = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   const handleInsertIdeia = async () => {
     try {
-      const response = await insertIdeia(formData); 
+      const response = await insertIdeia(formData);
       // console.log('formData')
       // console.log(formData)
       if (response.status === 200) {
         alert("Ideia inserida com sucesso!");
 
         setFormData({
-          title: '',          
-          description: '',
-          benefits: '',
-          whereToDo: '',
-          performer_id: '',
-          investment: '',
+          title: "",
+          description: "",
+          benefits: "",
+          whereToDo: "",
+          performer_id: "",
+          investment: "",
         });
-      } 
+        setSelectedPerformer(null);
+      }
     } catch (error) {
       console.error(error);
       setError("Erro ao inserir ideia!");
     }
   };
+
+  const options = departmentList.map((department) => ({
+    value: department.departmentId,
+    label: department.name,
+  }));
 
   return (
     <div>
@@ -123,20 +139,17 @@ const IdeiaForm = () => {
         </div>
         <div className="form-group">
           <label htmlFor="performer_id">Quem vai fazer</label>
-          <select
+          <Select
             name="performer_id"
             id="performer_id"
-            value={formData.performer_id}
-            onChange={handleChange}
-            className="form-control"
-          >
-            <option value="">Selecione um departamento</option>
-            {departmentList.map((department) => (
-              <option key={department.departmentId} value={department.departmentId}>
-                {department.name}
-              </option>
-            ))}
-          </select>
+            value={selectedPerformer}
+            onChange={(selectedOption) => {
+              setSelectedPerformer(selectedOption);
+              setFormData({ ...formData, performer_id: selectedOption.value });
+            }}
+            options={options}
+            isSearchable
+          />
         </div>
         <div className="form-group">
           <label htmlFor="investment">Investimentos para a execução</label>

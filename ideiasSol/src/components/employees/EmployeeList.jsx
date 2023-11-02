@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getEmployee, updateEmployee, deleteEmployee, getGroups } from "../../services/api";
 import { getDepartments } from "../../services/api";
+import Select from "react-select";
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -16,6 +17,8 @@ const EmployeeList = () => {
     type: "",
   });
   const [departmentList, setDepartmentList] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [initialValue, setInitialValue] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +44,6 @@ const EmployeeList = () => {
     (async () => {
       const response = await getGroups();
       setGroupsList(response.data);
-
     })();
   }, []);
 
@@ -122,6 +124,11 @@ const EmployeeList = () => {
     }
   };
 
+  const options = departmentList.map((department) => ({
+    value: department.departmentId,
+    label: department.name,
+  }));
+
   return (
     <div className="container mt-4">
       <h1>Lista de Funcionários</h1>
@@ -168,21 +175,18 @@ const EmployeeList = () => {
               </td>
               <td>
                 {editingEmployeeId === employee.employeeId ? (
-                  <select
-                    onChange={(e) => setEditedEmployee({ ...editedEmployee, departmentId: e.target.value })}
+                  <Select
                     name="departmentId"
                     id="departmentId"
-                    value={editedEmployee.departmentId}
-                    className="form-control"
-                  >
-                    <option value="">Selecione um departamento</option>
-                    {departmentList.map((department) => (
-                      <option key={department.departmentId} value={department.departmentId}>
-                        {department.name}
-                      </option>
-                    ))}
-                  </select>
-                  
+                    value={selectedDepartment}
+                    defaultValue={options.find((option) => option.value === initialValue)}
+                    onChange={(selectedOption) => {
+                      setSelectedDepartment(selectedOption);
+                      setEditedEmployee({ ...editedEmployee, departmentId: selectedOption.value });
+                    }}
+                    options={options}
+                    isSearchable
+                  />
                 ) : (
                   employee.depName
                 )}
@@ -190,19 +194,19 @@ const EmployeeList = () => {
               <td>
                 {editingEmployeeId === employee.employeeId ? (
                   <select
-                  onChange={(e) => setEditedEmployee({ ...editedEmployee, groupId: e.target.value })}
-                  name="groupId"
-                  id="groupId"
-                  value={editedEmployee.groupId}
-                  className="form-control"
-                >
-                  <option value="">Selecione um grupo</option>
-                  {groupsList.map((groups) => (
-                    <option key={groups.groupId} value={groups.groupId}>
-                      {groups.name}
-                    </option>
-                  ))}
-                </select>
+                    onChange={(e) => setEditedEmployee({ ...editedEmployee, groupId: e.target.value })}
+                    name="groupId"
+                    id="groupId"
+                    value={editedEmployee.groupId}
+                    className="form-control"
+                  >
+                    <option value="">Selecione um grupo</option>
+                    {groupsList.map((groups) => (
+                      <option key={groups.groupId} value={groups.groupId}>
+                        {groups.name}
+                      </option>
+                    ))}
+                  </select>
                 ) : (
                   employee.groupName
                 )}

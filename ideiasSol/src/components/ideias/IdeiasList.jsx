@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Select from "react-select";
 
 import { getIdeias } from "../../services/api";
 import { deleteIdeia } from "../../services/api";
@@ -16,6 +17,8 @@ const IdeiasList = () => {
   const [editingIdeiaId, setEditingIdeiaId] = useState(null);
   const [departmentList, setDepartmentList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedPerformer, setSelectedPerformer] = useState(null);
+  const [initialValue, setInitialValue] = useState("");
 
   const [editedData, setEditedData] = useState({
     campaign: "",
@@ -44,7 +47,6 @@ const IdeiasList = () => {
     (async () => {
       const response = await getDepartments();
       setDepartmentList(response.data);
-      // console.log(response.data);
       setLoading(false);
     })();
   }, []);
@@ -62,14 +64,12 @@ const IdeiasList = () => {
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
+  // const handleChange = (e) => {
+  //   const { name, value, type, checked, files } = e.target;
 
-    setEditedData({ ...editedData, [name]: value });
+  //   setEditedData({ ...editedData, [name]: value });
 
-    // console.log("editedData.performer_id");
-    // console.log(editedData.performer_id);
-  };
+  // };
 
   const handleDelete = async (ideiaId) => {
     try {
@@ -101,6 +101,14 @@ const IdeiasList = () => {
         investment: ideiaToEdit.investment,
         attachments: ideiaToEdit.attachments,
       });
+      
+      const selectedPerformerOption = options.find(
+        (option) => option.value === ideiaToEdit.performer_id
+      );
+
+      setSelectedPerformer(selectedPerformerOption);
+
+      console.log(selectedPerformer)
     }
   };
 
@@ -131,6 +139,11 @@ const IdeiasList = () => {
   const handleDetails = (ideiaId) => {
     return <Link to={`IdeiaDetail/${ideiaId}`} />;
   };
+
+  const options = departmentList.map((department) => ({
+    value: department.departmentId,
+    label: department.name,
+  }));
 
   return (
     <div className="container">
@@ -180,20 +193,18 @@ const IdeiasList = () => {
                       />
                       <br />
                       <label htmlFor="editedPerformer_id">Quem vai fazer</label>
-                      <select
-                        onChange={handleChange}
+                      <Select
                         name="performer_id"
-                        id="editedPerformer_id"
-                        value={editedData.performer_id}
-                        className="form-control"
-                      >
-                        <option value="">Selecione um departamento</option>
-                        {departmentList.map((department) => (
-                          <option key={department.departmentId} value={editedData.performer_i}>
-                            {department.name}
-                          </option>
-                        ))}
-                      </select>
+                        id="performer_id"
+                        value={selectedPerformer}
+                        defaultValue={options.find(option => option.value === initialValue)}
+                        onChange={(selectedOption) => {
+                          setSelectedPerformer(selectedOption);
+                          setEditedData({ ...editedData, performer_id: selectedOption.value });
+                        }}
+                        options={options}
+                        isSearchable
+                      />
                       <br />
                       <label htmlFor="editedInvestment">Investimento:</label>
                       <textarea
