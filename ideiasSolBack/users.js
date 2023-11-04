@@ -29,9 +29,6 @@ router.put("/:editingUserId", (req, res) => {
   const userId = req.params.editingUserId;
   const editedData = req.body;
 
-  console.log(userId)
-  console.log(editedData)
-
   const sqlUpdateUser =
     'UPDATE users SET user = ?, active = ?, type = ? WHERE userId = ?';
 

@@ -43,8 +43,9 @@ export const updateGroup = async (editingGroupId, editedGroup) => {
   return api.put(`/updateGroup/${editingGroupId}`, editedGroup);
 }
 
-export const insertGroup = async (formData) => {
-  return api.post("/insertGroup", {formData});
+export const insertGroup = async (groupData) => {
+  console.log(groupData)
+  return api.post("/insertGroup", {groupData});
 }
 
 export const insertIdeia = async (formData) => {
@@ -77,6 +78,10 @@ export const insertEmployee = async (formData) => {
 export const getEmployee = async () => {
   return api.get("/getEmployee");
 };
+
+// export const getEmployeesGroup = async () => {
+//   return api.get("/getEmployees");
+// };
 
 export const deleteEmployee = async (employeeId) => {
   return api.delete(`/deleteEmployee/${employeeId}`);

@@ -10,6 +10,7 @@ create table department (
     active tinyint not null
 );
 
+
 create table groupSol (
 	groupId integer primary key auto_increment not null,
     name varchar (30),
@@ -48,9 +49,6 @@ create table users (
     password varchar (200) not null,
     active tinyint not null,
     type varchar(20) not null
-    
-    /*foreign key (userId) references groupSol(groupId),
-    foreign key (userId) references employee(employeeId)*/
 );
 
 create table approvers (
@@ -104,10 +102,10 @@ create table approvalRequests (
 	ideiaID integer not null,
     approverId integer not null,
     date date not null,
-    deadline date not null,
+    deadline date not null
     
-    foreign key (ideiaID) references ideias (ideiaID),
-    foreign key (approverId) references approvers(approverId)
+    /*foreign key (ideiaID) references ideias (ideiaID),
+    foreign key (approverId) references approvers(approverId)*/
 );
 
 /*

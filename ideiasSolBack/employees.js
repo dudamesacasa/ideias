@@ -68,6 +68,20 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/", (req, res) => {
+  const sqlSelect =
+    "SELECT employee.name FROM employee;";
+
+  db.query(sqlSelect, (err, result) => {
+    if (err) {
+      console.log(err)
+      res.status(500).json({ error: "Erro ao buscar funcionários" });
+    } else {
+      res.json(result);
+    }
+  });
+});
+
 router.delete("/:employeeId", (req, res) => { 
   const employeeId = req.params.employeeId;
 
