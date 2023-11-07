@@ -52,8 +52,6 @@ const IdeiaForm = () => {
   const handleInsertIdeia = async () => {
     try {
       const response = await insertIdeia(formData);
-      // console.log('formData')
-      // console.log(formData)
       if (response.status === 200) {
         alert("Ideia inserida com sucesso!");
 

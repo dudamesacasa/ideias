@@ -17,8 +17,9 @@ const IdeiasList = () => {
   const [editingIdeiaId, setEditingIdeiaId] = useState(null);
   const [departmentList, setDepartmentList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedPerformer, setSelectedPerformer] = useState(null);
   const [initialValue, setInitialValue] = useState("");
+
+  const [selectedPerformer, setSelectedPerformer] = useState(initialValue);
 
   const [editedData, setEditedData] = useState({
     campaign: "",
@@ -90,6 +91,13 @@ const IdeiasList = () => {
 
     const ideiaToEdit = ideiasList.find((ideia) => ideia.ideiaId === ideiaId);
 
+    console.log('ideiaToEdit')
+    console.log(ideiaToEdit)
+
+    const selectedPerformerOption = options.find(
+      (option) => option.value === ideiaToEdit.performer_id
+    );
+
     if (ideiaToEdit) {
       setEditedData({
         campaign: ideiaToEdit.campaign,
@@ -102,13 +110,9 @@ const IdeiasList = () => {
         attachments: ideiaToEdit.attachments,
       });
       
-      const selectedPerformerOption = options.find(
-        (option) => option.value === ideiaToEdit.performer_id
-      );
+      
 
       setSelectedPerformer(selectedPerformerOption);
-
-      console.log(selectedPerformer)
     }
   };
 
@@ -117,9 +121,6 @@ const IdeiasList = () => {
       const response = await updateIdeia(editingIdeiaId, {
         editedData,
       });
-
-      console.log("editedData");
-      console.log(editedData);
 
       if (response.status === 200) {
         setEditingIdeiaId(null);
@@ -194,10 +195,8 @@ const IdeiasList = () => {
                       <br />
                       <label htmlFor="editedPerformer_id">Quem vai fazer</label>
                       <Select
-                        name="performer_id"
-                        id="performer_id"
-                        value={selectedPerformer}
-                        defaultValue={options.find(option => option.value === initialValue)}
+                        id="editedPerformer_id"
+                        value={selectedPerformer}                        
                         onChange={(selectedOption) => {
                           setSelectedPerformer(selectedOption);
                           setEditedData({ ...editedData, performer_id: selectedOption.value });
@@ -252,9 +251,9 @@ const IdeiasList = () => {
                   <button className="btn btn-danger" onClick={() => handleDelete(ideia.ideiaId)}>
                     Deletar
                   </button>
-                  <button className="btn btn-info" onClick={() => handleDetails(ideia.ideiaId)}>
+                  {/* <button className="btn btn-info" onClick={() => handleDetails(ideia.ideiaId)}>
                     Detalhes
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

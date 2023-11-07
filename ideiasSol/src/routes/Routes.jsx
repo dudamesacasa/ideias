@@ -33,16 +33,16 @@ const AppRoutes = () => {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/ideias" element={<IdeiasForm />}></Route>
-          <Route path="/listIdeias" element={<IdeiasList />}></Route>
-          <Route path="/detailsIdeias" element={<IdeiaDetail />}></Route>
-          <Route path="/employee" element={<EmployeeForm />}></Route>          
+          <Route path="/insertIideias" element={<IdeiasForm />}></Route>
+          <Route path="/ideiaslist" element={<IdeiasList />}></Route>
+          <Route path="/ideiasDetails" element={<IdeiaDetail />}></Route>
+          <Route path="/insertEmployee" element={<EmployeeForm />}></Route>          
           <Route path="/employeeList" element={<EmployeeList />}></Route>
-          <Route path="/listGroups" element={<GroupsList />}></Route>
           <Route path="/insertGroups" element={<GroupForm />}></Route>
+          <Route path="/groupsList" element={<GroupsList />}></Route>
           <Route path="/insertDepartment" element={<DepartmentForm />}></Route>
-          <Route path="/listDepartments" element={<DepartmentsList />}></Route>     
-          <Route path="/usersForm" element={<UsersForm />}></Route>     
+          <Route path="/departmentsList" element={<DepartmentsList />}></Route>     
+          <Route path="/insertUsers" element={<UsersForm />}></Route>     
           <Route path="/usersList" element={<UsersList />}></Route>     
         </Routes>
       </AuthProvider>
