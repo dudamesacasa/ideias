@@ -63,7 +63,7 @@ router.put("/:editingIdeiaId", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  /*add recuperação do grupo logado do local storage */
+  
   const sqlSelect =
     "SELECT ideiaId, campaign, title, status, description, benefits, whereToDo, department.name, investment, attachments FROM ideias join department on department.departmentId = ideias.performer_id;";
 
@@ -75,6 +75,7 @@ router.get("/", (req, res) => {
     }
   });
 });
+
 
 router.get("/ideia", (req, res) => {
   const ideiaID = req.params.ideia;

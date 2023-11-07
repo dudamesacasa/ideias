@@ -10,6 +10,7 @@ const ideiasRouter = require("./ideias.js");
 const employeeRouter = require("./employees.js")
 const groupsRouter = require("./groups.js"); 
 const usersRouter = require("./users.js");
+const rankingRouter = require("./ranking.js")
 
 const app = express();
 
@@ -49,6 +50,9 @@ app.use("/insertUser", usersRouter);
 app.use("/getUsers", usersRouter);
 app.use("/deleteUser", usersRouter);
 app.use("/updateUser", usersRouter);
+
+app.use("/getIdeiasRanking", rankingRouter);
+
 
 db.connect((err) => {
   if (err) {

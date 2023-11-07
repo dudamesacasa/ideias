@@ -14,6 +14,7 @@ import DepartmentForm from "../components/departments/DepartmentsForm";
 import DepartmentsList from "../components/departments/DepartmentsList";
 import UsersForm from "../components/users/UsersForm";
 import UsersList from "../components/users/UsersList";
+import IdeiasRanking from "../components/ranking/ranking";
 
 const AppRoutes = () => {
   const Private = ({ children }) => {
@@ -44,6 +45,8 @@ const AppRoutes = () => {
           <Route path="/departmentsList" element={<DepartmentsList />}></Route>     
           <Route path="/insertUsers" element={<UsersForm />}></Route>     
           <Route path="/usersList" element={<UsersList />}></Route>     
+          <Route path="/ranking" element={<IdeiasRanking />}></Route>     
+
         </Routes>
       </AuthProvider>
     </Router>

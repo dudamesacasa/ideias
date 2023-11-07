@@ -107,3 +107,7 @@ export const deleteUser = async (UsersId) => {
 export const updateUser = async (editingUserId, editedUser) => {
   return api.put(`/updateUser/${editingUserId}`, editedUser);
 }
+
+export const getIdeiasRanking = async () => {
+  return api.get("/getIdeiasRanking");
+};
