@@ -15,6 +15,9 @@ import DepartmentsList from "../components/departments/DepartmentsList";
 import UsersForm from "../components/users/UsersForm";
 import UsersList from "../components/users/UsersList";
 import IdeiasRanking from "../components/ranking/ranking";
+// import EmployeeAttendanceControl from "../components/frequency/FrequencyForm";
+import Initial from "../components/initial/initial";
+import LoginForm from "../components/auth/LoginFrom";
 
 const AppRoutes = () => {
   const Private = ({ children }) => {
@@ -34,6 +37,7 @@ const AppRoutes = () => {
     <Router>
       <AuthProvider>
         <Routes>
+          <Route path="/" element={<Initial/>}></Route>
           <Route path="/insertIideias" element={<IdeiasForm />}></Route>
           <Route path="/ideiaslist" element={<IdeiasList />}></Route>
           <Route path="/ideiasDetails" element={<IdeiaDetail />}></Route>
@@ -45,7 +49,10 @@ const AppRoutes = () => {
           <Route path="/departmentsList" element={<DepartmentsList />}></Route>     
           <Route path="/insertUsers" element={<UsersForm />}></Route>     
           <Route path="/usersList" element={<UsersList />}></Route>     
-          <Route path="/ranking" element={<IdeiasRanking />}></Route>     
+          <Route path="/ranking" element={<IdeiasRanking />}></Route>  
+          <Route path="/login" element={<LoginForm />}></Route>  
+          {/* <Route path="/frequency" element={<EmployeeAttendanceControl />}></Route>      */}
+
 
         </Routes>
       </AuthProvider>
