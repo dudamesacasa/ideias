@@ -1,14 +1,12 @@
 import axios from "axios";
 
-// const token = localStorage.getItem("token");
-
-// console.log(token)
+const token = localStorage.getItem("token");
 
 export const api = axios.create({
   baseURL: "http://localhost:4000",
-  // headers: {
-  //   Authorization: {token},
-  // },
+  headers: {
+    Authorization: {token},
+  },
 });
 
 export const createSession = async (username, password) => {

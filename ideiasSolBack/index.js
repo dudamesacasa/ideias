@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const accessTokenSecret = "slweiofjahidasw";
+const accessTokenSecret = "aioejfnchaueiw36afvev38e7v8ev7ger8g";
 
 const departmentsRouter = require("./departments.js"); 
 const ideiasRouter = require("./ideias.js");
@@ -18,14 +18,54 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "ideiassol2",
-});
+  database: "ideiassol",
+}); 
 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.post("/login", (req, res) => {  
+
+  console.log('chegou no back end')
+  const username = req.body.username;
+  const password = req.body.password;
+
+  const sqlSelect =
+    "SELECT users.user, users.type FROM users WHERE users.user = ? and users.password = ?;";
+
+  db.query(sqlSelect, [username, password], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: "Usuário ou senha inválidos" });
+    } else {      
+      if (result.length === 0) {
+        res.status(401).json({ error: "Usuário ou senha inválidos" });
+      } else {
+
+        const type = result[0].type;
+
+        console.log('type')
+        console.log(type)
+        
+
+        const accessToken = jwt.sign(
+          { username: username, role: type },
+
+          accessTokenSecret,
+          { expiresIn: "2h" }
+        );
+        res.json({
+          accessToken,
+          username,
+          type
+        });
+      }
+    }
+  });
+});
+
 // middlewares
+
 app.use("/getDepartments", departmentsRouter);
 app.use("/insertDepartment", departmentsRouter);
 app.use("/deleteDepartment", departmentsRouter);
@@ -52,6 +92,7 @@ app.use("/deleteUser", usersRouter);
 app.use("/updateUser", usersRouter);
 
 app.use("/getIdeiasRanking", rankingRouter);
+
 
 
 db.connect((err) => {

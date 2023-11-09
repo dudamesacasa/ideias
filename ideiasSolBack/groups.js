@@ -7,7 +7,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "ideiassol2",
+  database: "ideiassol",
 });
 
 router.get("/", (req, res) => {

@@ -32,9 +32,9 @@ export const AuthProvider = ({ children }) => {
     const response = await createSession(username, password);
 
     const loggedUser = response.data.username;
-    const role = response.data.admin;
+    const role = response.data.type;
     const token = response.data.accessToken;
-
+    
     localStorage.setItem("user", JSON.stringify(loggedUser));
     localStorage.setItem("token", token);
     localStorage.setItem("role", role);
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
     setUser(loggedUser);
     setRole(role);
-    navigate("/TasksManager");
+    navigate("/ideiasList");
   };
 
   const logout = () => {

@@ -1,3 +1,5 @@
+/*drop database ideiassol;*/
+
 create database ideiassol;
 
 use ideiassol;
@@ -9,7 +11,6 @@ create table department (
     executioner tinyint not null,
     active tinyint not null
 );
-
 
 create table groupSol (
 	groupId integer primary key auto_increment not null,
@@ -25,7 +26,7 @@ create table groupSol (
 create table employee(
 	employeeId integer primary key auto_increment not null,
     name varchar (100) not null,
-    document integer(11) not null,
+    document varchar(11) not null,
     departmentId integer not null,
     groupId integer not null,
     active tinyint not null,
@@ -34,10 +35,11 @@ create table employee(
     foreign key (departmentId) references department (departmentId)
 );
 
-create table groupsMembers (
+create table groupMembers (
 	memberId integer primary key not null,
     groupId integer not null,
-    type varchar (10),
+    leader tinyint,
+    reporter tinyint,
     
     foreign key (groupId) references groupSol(groupId),
     foreign key (memberId) references employee(employeeId)    
@@ -48,7 +50,7 @@ create table users (
     user varchar (20) not null,
     password varchar (200) not null,
     active tinyint not null,
-    type varchar(20) not null
+    type enum ('GESTOR', 'ADMIN', 'GRUPO', "LÍDER", "RELATOR") not null
 );
 
 create table approvers (
@@ -70,10 +72,10 @@ create table employeeFrequency (
 
 create table ideias (
 	ideiaId integer primary key auto_increment not null,
-    campaign tinyint not null,
+    campaign enum('Melhoria Simples', 'Melhor Ideia') not null,
     title varchar (250) not null,
     group_id int not null,
-    status varchar(25) not null,
+    status enum('EM ELABORAÇÃO', 'EM APROVAÇÃO', 'APROVADA', 'REPROVADA', 'EM IMPLANTAÇÃO', 'IMPLANTADA') not null,
     description text (4000) not null,
     benefits text (4000) not null, 
     whereToDo text (1000) not null, 
@@ -94,9 +96,6 @@ create table ideias (
     groupInvolvement text (1000),
     glossary text (1000)
 );
-
-alter table ideias
-modify campaign varchar (30) not null;
 
 create table approvalRequests (
 	ideiaID integer not null,

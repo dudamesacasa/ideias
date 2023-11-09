@@ -6,7 +6,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "ideiassol2",
+  database: "ideiassol",
 });
 
 router.post("/", (req, res) => {
@@ -18,7 +18,7 @@ router.post("/", (req, res) => {
   /*adicionar validação anexos */
 
   const sqlInsertIdeia =
-    "INSERT INTO ideias (campaign, group_id, status, title, description, benefits, whereToDo, performer_id, investment) values ('Melhoria Simples', 1, 'Digitada', ?)";
+    "INSERT INTO ideias (campaign, group_id, status, title, description, benefits, whereToDo, performer_id, investment) values ('Melhoria Simples', 1, 'EM ELABORAÇÃO', ?)";
   db.query(sqlInsertIdeia, [data], (err, results) => {
     if (err) {
       console.error("Erro ao inserir ideia", err);
