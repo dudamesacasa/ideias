@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { insertDepartment } from "../../services/api";
 import CustomHeader from "../header/Header";
+import { insertGroup, getEmployee, getDepartments } from "../../services/api";
+import Select from "react-select";
 
 const DepartmentForm = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,17 @@ const DepartmentForm = () => {
     executioner: 0,
     active: 1,
   });
+
+  const [employeeList, setEmployeeList] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const response = await getEmployee();
+      setEmployeeList(response.data);
+      // setLoading(false);
+    })();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -34,12 +47,19 @@ const DepartmentForm = () => {
           executioner: 0,
           active: 1,
         });
+
+        setSelectedEmployee(null);
       }
     } catch (error) {
       console.error(error);
       alert("Erro ao inserir departamento!");
     }
   };
+
+  const optionsEmployee = employeeList.map((employee) => ({
+    value: employee.employeeId,
+    label: employee.name,
+  }));
 
   return (
     <div>
@@ -62,7 +82,7 @@ const DepartmentForm = () => {
           </div>
           <div className="form-group p-2">
             <label htmlFor="manager_id">ID do Gerente:</label>
-            <input
+            {/* <input
               type="number"
               name="manager_id"
               id="manager_id"
@@ -70,22 +90,34 @@ const DepartmentForm = () => {
               onChange={handleChange}
               className="form-control"
               required
+            /> */}
+
+            <Select
+              name="manager_id"
+              id="manager_id"
+              value={selectedEmployee}
+              onChange={(selectedOption) => {
+                setSelectedEmployee(selectedOption);
+                setFormData({ ...formData, manager_id: selectedOption.value });
+              }}
+              options={optionsEmployee}
+              isSearchable
             />
           </div>
           <div className="form-group p-2">
             <label htmlFor="executioner">ID do Executor:</label>
+
             <input
-              type="number"
+              className="form-check-input"
+              type="checkbox"
               name="executioner"
               id="executioner"
-              value={formData.executioner}
+              checked={formData.executioner === 1}
               onChange={handleChange}
-              className="form-control"
-              required
             />
           </div>
           <div className="form-group p-2">
-             <label className="form-check-labe" htmlFor="active">
+            <label className="form-check-labe" htmlFor="active">
               Ativo:
             </label>
             <input

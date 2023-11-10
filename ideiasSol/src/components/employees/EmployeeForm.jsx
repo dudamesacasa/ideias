@@ -37,14 +37,12 @@ const EmployeeForm = () => {
     (async () => {
       const response = await getDepartments();
       setDepartmentList(response.data);
-      // console.log(response.data);
       setLoading(false);
     })();
 
     (async () => {
       const response = await getGroups();
       setGroupList(response.data);
-      // console.log(response.data);
       setLoading(false);
     })();
   }, []);
@@ -118,7 +116,6 @@ const EmployeeForm = () => {
           </div>
           <div className="form-group p-2">
             <label htmlFor="departmentId">Departamento:</label>
-
             <Select
               name="departmentId"
               id="departmentId"
@@ -160,7 +157,7 @@ const EmployeeForm = () => {
           </div>
           <div className="form-group p-2">
             <label htmlFor="type">Tipo:</label>
-            <input
+            {/* <input
               type="text"
               name="type"
               id="type"
@@ -168,7 +165,19 @@ const EmployeeForm = () => {
               value={formData.type}
               onChange={handleChange}
               required
-            />
+            /> */}
+            <select
+              name="type"
+              id="type"
+              className="form-control"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Selecione o Tipo</option>
+              <option value="GESTOR">GESTOR</option>
+              <option value="COLABORADOR">COLABORADOR</option>
+            </select>
           </div>
           <button type="submit" className="btn btn-primary">
             Cadastrar

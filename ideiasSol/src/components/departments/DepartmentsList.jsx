@@ -155,17 +155,33 @@ const DepartmentsList = () => {
                 </td>
                 <td>
                   {editingDepartmentId === department.departmentId ? (
-                    <input
-                      type="text"
-                      value={editedDepartment.executioner}
+                    <select
                       onChange={(e) => setEditedDepartment({ ...editedDepartment, executioner: e.target.value })}
+                      value={editedDepartment.executioner}
                       className="form-control"
-                    />
+                    >
+                      <option value="1">Executor</option>
+                      <option value="0">Não é executor</option>
+                    </select>
                   ) : (
-                    department.executioner
+                    <td>{department.executioner ? "Executor" : "Não é executor"}</td>
                   )}
                 </td>
-                <td>{department.active ? "Ativo" : "Inativo"}</td>
+                <td>
+                  {editingDepartmentId === department.departmentId ? (
+                    <select
+                      onChange={(e) => setEditedDepartment({ ...editedDepartment, active: e.target.value })}
+                      value={editedDepartment.active}
+                      className="form-control"
+                    >
+                      <option value="1">Ativo</option>
+                      <option value="0">Inativo</option>
+                    </select>
+                  ) : (
+                    <td>{department.active ? "Ativo" : "Inativo"}</td>
+                  )}
+                </td>
+
                 <td>
                   {editingDepartmentId === department.departmentId ? (
                     <div>

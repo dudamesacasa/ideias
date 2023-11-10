@@ -81,9 +81,15 @@ const EmployeeList = () => {
         document: employeeToEdit.document,
         departmentId: employeeToEdit.departmentId,
         groupId: employeeToEdit.groupId,
+        groupName: employeeToEdit.groupName,
+        depName: employeeToEdit.depName,
+
         active: employeeToEdit.active,
         type: employeeToEdit.type,
       });
+
+      setSelectedDepartment(options.find((option) => option.label === employeeToEdit.depName));
+      setInitialValue(employeeToEdit.groupId);
     }
   };
 
@@ -180,8 +186,8 @@ const EmployeeList = () => {
                     <Select
                       name="departmentId"
                       id="departmentId"
-                      value={selectedDepartment}
-                      defaultValue={options.find((option) => option.value === initialValue)}
+                      value={editedEmployee.departmentId}
+                      defaultValue={selectedDepartment}
                       onChange={(selectedOption) => {
                         setSelectedDepartment(selectedOption);
                         setEditedEmployee({ ...editedEmployee, departmentId: selectedOption.value });
@@ -216,12 +222,14 @@ const EmployeeList = () => {
                 <td>{employee.active ? "Ativo" : "Inativo"}</td>
                 <td>
                   {editingEmployeeId === employee.employeeId ? (
-                    <input
-                      type="text"
-                      value={editedEmployee.type}
+                    <select
                       onChange={(e) => setEditedEmployee({ ...editedEmployee, type: e.target.value })}
+                      value={editedEmployee.type}
                       className="form-control"
-                    />
+                    >
+                      <option value="GESTOR">GESTOR</option>
+                      <option value="COLABORADOR">COLABORADOR</option>
+                    </select>
                   ) : (
                     employee.type
                   )}
