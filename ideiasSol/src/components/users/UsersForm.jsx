@@ -35,13 +35,28 @@ const UserForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    
+    
+    if (name === "type" && formData.type !== value) {
+      setFormData({
+        user: "",
+        password: "",
+        confirmPassword: "",
+        active: true,
+        type: value,
+        bond: null,
+      });
+
+      setSelectedGroup(null); 
+      setSelectedEmployee(null);
+
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
 
     if (name === "password") {
       validatePassword(value);
     }
-
-
   };
 
   const validatePassword = (password) => {
@@ -83,8 +98,8 @@ const UserForm = () => {
         setSelectedEmployee(null);
       }
     } catch (error) {
-      console.error(error);
-      alert("Erro ao inserir usuário!");
+      // console.error(error.response.data.error);
+      alert( error.response.data.error);
     }
   };
 
