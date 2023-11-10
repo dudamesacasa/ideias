@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getEmployee, updateEmployee, deleteEmployee, getGroups } from "../../services/api";
 import { getDepartments } from "../../services/api";
 import Select from "react-select";
+import CustomHeader from "../header/Header";
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
@@ -130,125 +131,128 @@ const EmployeeList = () => {
   }));
 
   return (
-    <div className="container mt-4">
-      <h1>Lista de Funcionários</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Documento</th>
-            <th>Departamento</th>
-            <th>Grupo</th>
-            <th>Status</th>
-            <th>Tipo</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((employee) => (
-            <tr key={employee.employeeId}>
-              <td>{employee.employeeId}</td>
-              <td>
-                {editingEmployeeId === employee.employeeId ? (
-                  <input
-                    type="text"
-                    value={editedEmployee.name}
-                    onChange={(e) => setEditedEmployee({ ...editedEmployee, name: e.target.value })}
-                    className="form-control"
-                  />
-                ) : (
-                  employee.name
-                )}
-              </td>
-              <td>
-                {editingEmployeeId === employee.employeeId ? (
-                  <input
-                    type="text"
-                    value={editedEmployee.document}
-                    onChange={(e) => setEditedEmployee({ ...editedEmployee, document: e.target.value })}
-                    className="form-control"
-                  />
-                ) : (
-                  employee.document
-                )}
-              </td>
-              <td>
-                {editingEmployeeId === employee.employeeId ? (
-                  <Select
-                    name="departmentId"
-                    id="departmentId"
-                    value={selectedDepartment}
-                    defaultValue={options.find((option) => option.value === initialValue)}
-                    onChange={(selectedOption) => {
-                      setSelectedDepartment(selectedOption);
-                      setEditedEmployee({ ...editedEmployee, departmentId: selectedOption.value });
-                    }}
-                    options={options}
-                    isSearchable
-                  />
-                ) : (
-                  employee.depName
-                )}
-              </td>
-              <td>
-                {editingEmployeeId === employee.employeeId ? (
-                  <select
-                    onChange={(e) => setEditedEmployee({ ...editedEmployee, groupId: e.target.value })}
-                    name="groupId"
-                    id="groupId"
-                    value={editedEmployee.groupId}
-                    className="form-control"
-                  >
-                    <option value="">Selecione um grupo</option>
-                    {groupsList.map((groups) => (
-                      <option key={groups.groupId} value={groups.groupId}>
-                        {groups.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  employee.groupName
-                )}
-              </td>
-              <td>{employee.active ? "Ativo" : "Inativo"}</td>
-              <td>
-                {editingEmployeeId === employee.employeeId ? (
-                  <input
-                    type="text"
-                    value={editedEmployee.type}
-                    onChange={(e) => setEditedEmployee({ ...editedEmployee, type: e.target.value })}
-                    className="form-control"
-                  />
-                ) : (
-                  employee.type
-                )}
-              </td>
-              <td>
-                {editingEmployeeId === employee.employeeId ? (
-                  <div>
-                    <button className="btn btn-success btn-sm mr-2" onClick={handleSave}>
-                      Salvar
-                    </button>
-                    <button className="btn btn-danger btn-sm" onClick={handleCancelEdit}>
-                      Cancelar
-                    </button>
-                  </div>
-                ) : (
-                  <div>
-                    <button className="btn btn-primary btn-sm mr-2" onClick={() => handleEdit(employee.employeeId)}>
-                      Editar
-                    </button>
-                    <button className="btn btn-danger btn-sm" onClick={() => handleDelete(employee.employeeId)}>
-                      Excluir
-                    </button>
-                  </div>
-                )}
-              </td>
+    <div>
+      <CustomHeader></CustomHeader>
+      <div className="container mt-4">
+        <h1 className="text-center">Lista de Funcionários</h1>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Documento</th>
+              <th>Departamento</th>
+              <th>Grupo</th>
+              <th>Status</th>
+              <th>Tipo</th>
+              <th>Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {employees.map((employee) => (
+              <tr key={employee.employeeId}>
+                <td>{employee.employeeId}</td>
+                <td>
+                  {editingEmployeeId === employee.employeeId ? (
+                    <input
+                      type="text"
+                      value={editedEmployee.name}
+                      onChange={(e) => setEditedEmployee({ ...editedEmployee, name: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    employee.name
+                  )}
+                </td>
+                <td>
+                  {editingEmployeeId === employee.employeeId ? (
+                    <input
+                      type="text"
+                      value={editedEmployee.document}
+                      onChange={(e) => setEditedEmployee({ ...editedEmployee, document: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    employee.document
+                  )}
+                </td>
+                <td>
+                  {editingEmployeeId === employee.employeeId ? (
+                    <Select
+                      name="departmentId"
+                      id="departmentId"
+                      value={selectedDepartment}
+                      defaultValue={options.find((option) => option.value === initialValue)}
+                      onChange={(selectedOption) => {
+                        setSelectedDepartment(selectedOption);
+                        setEditedEmployee({ ...editedEmployee, departmentId: selectedOption.value });
+                      }}
+                      options={options}
+                      isSearchable
+                    />
+                  ) : (
+                    employee.depName
+                  )}
+                </td>
+                <td>
+                  {editingEmployeeId === employee.employeeId ? (
+                    <select
+                      onChange={(e) => setEditedEmployee({ ...editedEmployee, groupId: e.target.value })}
+                      name="groupId"
+                      id="groupId"
+                      value={editedEmployee.groupId}
+                      className="form-control"
+                    >
+                      <option value="">Selecione um grupo</option>
+                      {groupsList.map((groups) => (
+                        <option key={groups.groupId} value={groups.groupId}>
+                          {groups.name}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    employee.groupName
+                  )}
+                </td>
+                <td>{employee.active ? "Ativo" : "Inativo"}</td>
+                <td>
+                  {editingEmployeeId === employee.employeeId ? (
+                    <input
+                      type="text"
+                      value={editedEmployee.type}
+                      onChange={(e) => setEditedEmployee({ ...editedEmployee, type: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    employee.type
+                  )}
+                </td>
+                <td>
+                  {editingEmployeeId === employee.employeeId ? (
+                    <div>
+                      <button className="btn btn-success btn-sm mr-2" onClick={handleSave}>
+                        Salvar
+                      </button>
+                      <button className="btn btn-danger btn-sm" onClick={handleCancelEdit}>
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button className="btn btn-primary btn-sm mr-2" onClick={() => handleEdit(employee.employeeId)}>
+                        Editar
+                      </button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDelete(employee.employeeId)}>
+                        Excluir
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

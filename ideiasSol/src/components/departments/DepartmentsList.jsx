@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  getDepartments,
-  updateDepartment,
-  deleteDepartment,
-  getEmployee
-} from "../../services/api";
+import CustomHeader from "../header/Header";
+import { getDepartments, updateDepartment, deleteDepartment, getEmployee } from "../../services/api";
 
 const DepartmentsList = () => {
   const [departments, setDepartments] = useState([]);
@@ -16,7 +12,7 @@ const DepartmentsList = () => {
     name: "",
     manager_id: null,
     executioner: 0,
-    active: 0
+    active: 0,
   });
 
   useEffect(() => {
@@ -57,9 +53,7 @@ const DepartmentsList = () => {
   const handleEdit = (departmentId) => {
     setEditingDepartmentId(departmentId);
 
-    const departmentToEdit = departments.find(
-      (department) => department.departmentId === departmentId
-    );
+    const departmentToEdit = departments.find((department) => department.departmentId === departmentId);
 
     if (departmentToEdit) {
       setEditedDepartment({
@@ -67,7 +61,7 @@ const DepartmentsList = () => {
         name: departmentToEdit.name,
         manager_id: departmentToEdit.manager_id,
         executioner: departmentToEdit.executioner,
-        active: departmentToEdit.active
+        active: departmentToEdit.active,
       });
     }
   };
@@ -109,93 +103,99 @@ const DepartmentsList = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h1>Lista de Departamentos</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Gerente</th>
-            <th>Executor</th>
-            <th>Ativo</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {departments.map((department) => (
-            <tr key={department.departmentId}>
-              <td>{department.departmentId}</td>
-              <td>
-                {editingDepartmentId === department.departmentId ? (
-                  <input
-                    type="text"
-                    value={editedDepartment.name}
-                    onChange={(e) => setEditedDepartment({ ...editedDepartment, name: e.target.value })}
-                    className="form-control"
-                  />
-                ) : (
-                  department.name
-                )}
-              </td>
-              <td>
-                {editingDepartmentId === department.departmentId ? (
-                  <select
-                    onChange={(e) => setEditedDepartment({ ...editedDepartment, manager_id: e.target.value })}
-                    name="manager_id"
-                    id="manager_id"
-                    value={editedDepartment.manager_id}
-                    className="form-control"
-                  >
-                    <option value="">Selecione um gestor</option>
-                    {employeeList.map((employee) => (
-                      <option key={employee.employeeId} value={employee.employeeId}>
-                        {employee.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  department.employeeName
-                )}
-              </td>
-              <td>
-                {editingDepartmentId === department.departmentId ? (
-                  <input
-                    type="text"
-                    value={editedDepartment.executioner}
-                    onChange={(e) => setEditedDepartment({ ...editedDepartment, executioner: e.target.value })}
-                    className="form-control"
-                  />
-                ) : (
-                  department.executioner
-                )}
-              </td>
-              <td>{department.active ? "Ativo" : "Inativo"}</td>
-              <td>
-                {editingDepartmentId === department.departmentId ? (
-                  <div>
-                    <button className="btn btn-success btn-sm mr-2" onClick={handleSave}>
-                      Salvar
-                    </button>
-                    <button className="btn btn-danger btn-sm" onClick={handleCancelEdit}>
-                      Cancelar
-                    </button>
-                  </div>
-                ) : (
-                  <div>
-                    <button className="btn btn-primary btn-sm mr-2" onClick={() => handleEdit(department.departmentId)}>
-                      Editar
-                    </button>
-                    <button className="btn btn-danger btn-sm" onClick={() => handleDelete(department.departmentId)}>
-                      Excluir
-                    </button>
-                  </div>
-                )}
-              </td>
+    <div>
+      <CustomHeader></CustomHeader>
+      <div className="container mt-4">
+        <h1 className="text-center">Lista de Departamentos</h1>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Gerente</th>
+              <th>Executor</th>
+              <th>Ativo</th>
+              <th>Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {departments.map((department) => (
+              <tr key={department.departmentId}>
+                <td>{department.departmentId}</td>
+                <td>
+                  {editingDepartmentId === department.departmentId ? (
+                    <input
+                      type="text"
+                      value={editedDepartment.name}
+                      onChange={(e) => setEditedDepartment({ ...editedDepartment, name: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    department.name
+                  )}
+                </td>
+                <td>
+                  {editingDepartmentId === department.departmentId ? (
+                    <select
+                      onChange={(e) => setEditedDepartment({ ...editedDepartment, manager_id: e.target.value })}
+                      name="manager_id"
+                      id="manager_id"
+                      value={editedDepartment.manager_id}
+                      className="form-control"
+                    >
+                      <option value="">Selecione um gestor</option>
+                      {employeeList.map((employee) => (
+                        <option key={employee.employeeId} value={employee.employeeId}>
+                          {employee.name}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    department.employeeName
+                  )}
+                </td>
+                <td>
+                  {editingDepartmentId === department.departmentId ? (
+                    <input
+                      type="text"
+                      value={editedDepartment.executioner}
+                      onChange={(e) => setEditedDepartment({ ...editedDepartment, executioner: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    department.executioner
+                  )}
+                </td>
+                <td>{department.active ? "Ativo" : "Inativo"}</td>
+                <td>
+                  {editingDepartmentId === department.departmentId ? (
+                    <div>
+                      <button className="btn btn-success btn-sm mr-2" onClick={handleSave}>
+                        Salvar
+                      </button>
+                      <button className="btn btn-danger btn-sm" onClick={handleCancelEdit}>
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button
+                        className="btn btn-primary btn-sm mr-2"
+                        onClick={() => handleEdit(department.departmentId)}
+                      >
+                        Editar
+                      </button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDelete(department.departmentId)}>
+                        Excluir
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

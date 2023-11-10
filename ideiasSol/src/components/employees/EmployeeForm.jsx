@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { getDepartments } from "../../services/api";
-import { getGroups } from "../../services/api";
-import { insertEmployee } from "../../services/api";
+import { getDepartments, getGroups, insertEmployee } from "../../services/api";
 import Select from "react-select";
+import CustomHeader from "../header/Header";
 
 const EmployeeForm = () => {
   const [departmentList, setDepartmentList] = useState([]);
   const [groupList, setGroupList] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [selectedGroup, setSelectedGroup] = useState(null);
-
 
   const [loading, setLoading] = useState(true);
 
@@ -93,91 +91,94 @@ const EmployeeForm = () => {
   //   }
 
   return (
-    <div className="container mt-5">
-      <h2>Cadastro de Funcionários</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Nome:</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            className="form-control"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="document">Documento:</label>
-          <input
-            type="text"
-            name="document"
-            id="document"
-            className="form-control"
-            value={formData.document}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="departmentId">Departamento:</label>
-          
-          <Select
-            name="departmentId"
-            id="departmentId"
-            value={selectedDepartment}
-            onChange={(selectedOption) => {
-              setSelectedDepartment(selectedOption);
-              setFormData({ ...formData, departmentId: selectedOption.value });
-            }}
-            options={optionsDepartments}
-            isSearchable
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="groupId">Grupo:</label>
-          <Select
-            name="groupId"
-            id="groupId"
-            value={selectedGroup}
-            onChange={(selectedOption) => {
-              setSelectedGroup(selectedOption);
-              setFormData({ ...formData, groupId: selectedOption.value });
-            }}
-            options={optionsGroups}
-            isSearchable
-          />
-        </div>
-        <div className="form-check">
-          <input
-            type="checkbox"
-            name="active"
-            id="active"
-            className="form-check-input"
-            checked={formData.active}
-            onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-          />
-          <label className="form-check-label" htmlFor="active">
-            Ativo
-          </label>
-        </div>
-        <div className="form-group">
-          <label htmlFor="type">Tipo:</label>
-          <input
-            type="text"
-            name="type"
-            id="type"
-            className="form-control"
-            value={formData.type}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Cadastrar
-        </button>
-      </form>
+    <div>
+      <CustomHeader></CustomHeader>
+      <div className="container mt-4">
+        <h2 className="text-center">Cadastro de Funcionários</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group p-2">
+            <label htmlFor="name">Nome:</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              className="form-control"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group p-2">
+            <label htmlFor="document">Documento:</label>
+            <input
+              type="text"
+              name="document"
+              id="document"
+              className="form-control"
+              value={formData.document}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group p-2">
+            <label htmlFor="departmentId">Departamento:</label>
+
+            <Select
+              name="departmentId"
+              id="departmentId"
+              value={selectedDepartment}
+              onChange={(selectedOption) => {
+                setSelectedDepartment(selectedOption);
+                setFormData({ ...formData, departmentId: selectedOption.value });
+              }}
+              options={optionsDepartments}
+              isSearchable
+            />
+          </div>
+          <div className="form-group p-2">
+            <label htmlFor="groupId">Grupo:</label>
+            <Select
+              name="groupId"
+              id="groupId"
+              value={selectedGroup}
+              onChange={(selectedOption) => {
+                setSelectedGroup(selectedOption);
+                setFormData({ ...formData, groupId: selectedOption.value });
+              }}
+              options={optionsGroups}
+              isSearchable
+            />
+          </div>
+          <div className="form-group p-2">
+            <label className="form-check-label" htmlFor="active">
+              Ativo: 
+            </label>
+            <input
+              type="checkbox"
+              name="active"
+              id="active"
+              className="form-check-input"
+              checked={formData.active}
+              onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+            />
+          </div>
+          <div className="form-group p-2">
+            <label htmlFor="type">Tipo:</label>
+            <input
+              type="text"
+              name="type"
+              id="type"
+              className="form-control"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Cadastrar
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

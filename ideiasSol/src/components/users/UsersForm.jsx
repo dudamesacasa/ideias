@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { insertUser, getGroups, getEmployee } from "../../services/api";
 import Select from "react-select";
+import CustomHeader from "../header/Header";
 
 const UserForm = () => {
   const [formData, setFormData] = useState({
@@ -30,13 +31,11 @@ const UserForm = () => {
       setEmployeeList(response.data);
       // setLoading(false);
     })();
-
-  },[]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    
+
     if (name === "type" && formData.type !== value) {
       setFormData({
         user: "",
@@ -47,9 +46,8 @@ const UserForm = () => {
         bond: null,
       });
 
-      setSelectedGroup(null); 
+      setSelectedGroup(null);
       setSelectedEmployee(null);
-
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -65,9 +63,7 @@ const UserForm = () => {
     if (passwordRegex.test(password)) {
       setPasswordError("");
     } else {
-      setPasswordError(
-        "A senha deve ter no mínimo 8 caracteres, incluindo letras, números e caracteres especiais."
-      );
+      setPasswordError("A senha deve ter no mínimo 8 caracteres, incluindo letras, números e caracteres especiais.");
     }
   };
 
@@ -94,12 +90,12 @@ const UserForm = () => {
           bond: null,
         });
 
-        setSelectedGroup(null); 
+        setSelectedGroup(null);
         setSelectedEmployee(null);
       }
     } catch (error) {
       // console.error(error.response.data.error);
-      alert( error.response.data.error);
+      alert(error.response.data.error);
     }
   };
 
@@ -114,98 +110,108 @@ const UserForm = () => {
   }));
 
   return (
-    <div className="container mt-5">
-      <h2>Cadastro de Usuários</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="type">Tipo:</label>
-          <select name="type" id="type" className="form-control" value={formData.type} onChange={handleChange} required>
-            <option value="">Selecione o Tipo</option>
-            <option value="GESTOR">GESTOR</option>
-            <option value="ADMIN">ADMIN</option>
-            <option value="GRUPO">GRUPO</option>
-            <option value="LÍDER">LÍDER</option>
-            <option value="RELATOR">RELATOR</option>
-          </select>
-        </div>
-        {(formData.type === "GRUPO" ||
-          formData.type === "LÍDER" ||
-          formData.type === "RELATOR" ||
-          formData.type === "GESTOR") && (
-          <div className="form-group">
-            <label htmlFor="group">{formData.type === "GESTOR" ? "Gestor" : "Grupo"}:</label>
-            <Select
-              name={formData.type === "GESTOR" ? "employeeId" : "groupId"}
-              id={formData.type === "GESTOR" ? "employeeId" : "groupId"}
-              value={formData.type === "GESTOR" ? selectedEmployee : selectedGroup}
-              onChange={(selectedOption) => {
-                if (formData.type === "GESTOR") {
-                  setSelectedEmployee(selectedOption);
-                } else {
-                  setSelectedGroup(selectedOption);
-                }
-                setFormData({ ...formData, bond: selectedOption.value });
-              }}
-              options={formData.type === "GESTOR" ? optionsEmployee : optionsGroups}
-              isSearchable
+    <div>
+      <CustomHeader></CustomHeader>
+      <div className="container mt-4">
+        <h2 className="text-center">Cadastro de Usuários</h2>
+        <form onSubmit={handleSubmit} >
+          <div className="form-group p-2">
+            <label htmlFor="type">Tipo:</label>
+            <select
+              name="type"
+              id="type"
+              className="form-control"
+              value={formData.type}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Selecione o Tipo</option>
+              <option value="GESTOR">GESTOR</option>
+              <option value="ADMIN">ADMIN</option>
+              <option value="GRUPO">GRUPO</option>
+              <option value="LÍDER">LÍDER</option>
+              <option value="RELATOR">RELATOR</option>
+            </select>
+          </div>
+          {(formData.type === "GRUPO" ||
+            formData.type === "LÍDER" ||
+            formData.type === "RELATOR" ||
+            formData.type === "GESTOR") && (
+            <div className="form-group p-2">
+              <label htmlFor="group">{formData.type === "GESTOR" ? "Gestor" : "Grupo"}:</label>
+              <Select
+                name={formData.type === "GESTOR" ? "employeeId" : "groupId"}
+                id={formData.type === "GESTOR" ? "employeeId" : "groupId"}
+                value={formData.type === "GESTOR" ? selectedEmployee : selectedGroup}
+                onChange={(selectedOption) => {
+                  if (formData.type === "GESTOR") {
+                    setSelectedEmployee(selectedOption);
+                  } else {
+                    setSelectedGroup(selectedOption);
+                  }
+                  setFormData({ ...formData, bond: selectedOption.value });
+                }}
+                options={formData.type === "GESTOR" ? optionsEmployee : optionsGroups}
+                isSearchable
+              />
+            </div>
+          )}
+
+          <div className="form-group p-2">
+            <label htmlFor="user">Usuário:</label>
+            <input
+              type="text"
+              name="user"
+              id="user"
+              className="form-control"
+              value={formData.user}
+              onChange={handleChange}
+              required
             />
           </div>
-        )}
-
-        <div className="form-group">
-          <label htmlFor="user">Usuário:</label>
-          <input
-            type="text"
-            name="user"
-            id="user"
-            className="form-control"
-            value={formData.user}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Senha:</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            className="form-control"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirme a senha:</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            className="form-control"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {passwordError && <p className="text-danger">{passwordError}</p>}
-        <div className="form-check">
-          <input
-            type="checkbox"
-            name="active"
-            id="active"
-            className="form-check-input"
-            checked={formData.active}
-            onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
-          />
-          <label className="form-check-label" htmlFor="active">
-            Ativo
-          </label>
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Cadastrar
-        </button>
-      </form>
+          <div className="form-group p-2">
+            <label htmlFor="password">Senha:</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              className="form-control"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group p-2">
+            <label htmlFor="confirmPassword">Confirme a senha:</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              className="form-control"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          {passwordError && <p className="text-danger">{passwordError}</p>}
+          <div className="form-group p-2">
+            <input
+              type="checkbox"
+              name="active"
+              id="active"
+              className="form-check-input"
+              checked={formData.active}
+              onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+            />
+            <label className="form-check-label" htmlFor="active">
+              Ativo
+            </label>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Cadastrar
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

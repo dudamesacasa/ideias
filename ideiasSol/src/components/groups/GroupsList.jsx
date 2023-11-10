@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getGroups, updateGroup, deleteGroup } from "../../services/api";
-import { getDepartments } from "../../services/api";
+import { getGroups, updateGroup, deleteGroup, getDepartments } from "../../services/api";
+import CustomHeader from "../header/Header";
 
 const GroupsList = () => {
   const [groups, setGroups] = useState([]);
@@ -105,106 +105,109 @@ const GroupsList = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h1>Lista de Grupos</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Departamento</th>
-            <th>Email</th>
-            <th>Avatar</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {groups.map((group) => (
-            <tr key={group.groupId}>
-              <td>{group.groupId}</td>
-              <td>
-                {editingGroupId === group.groupId ? (
-                  <input
-                    type="text"
-                    value={editedGroup.name}
-                    onChange={(e) => setEditedGroup({ ...editedGroup, name: e.target.value })}
-                    className="form-control"
-                  />
-                ) : (
-                  group.name
-                )}
-              </td>
-              <td>
-                {editingGroupId === group.groupId ? (
-                  <select
-                    onChange={(e) => setEditedGroup({ ...editedGroup, departmentId: e.target.value })}
-                    name="departmentId"
-                    id="departmentId"
-                    value={editedGroup.departmentId}
-                    className="form-control"
-                  >
-                    <option value="">Selecione um departamento</option>
-                    {departmentList.map((department) => (
-                      <option key={department.departmentId} value={department.departmentId}>
-                        {department.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  group.depName
-                )}
-              </td>
-              <td>
-                {editingGroupId === group.groupId ? (
-                  <input
-                    type="text"
-                    value={editedGroup.email}
-                    onChange={(e) => setEditedGroup({ ...editedGroup, email: e.target.value })}
-                    className="form-control"
-                  />
-                ) : (
-                  group.email
-                )}
-              </td>
-              <td>
-                {editingGroupId === group.groupId ? (
-                  <input
-                    type="text"
-                    value={editedGroup.avatar}
-                    onChange={(e) => setEditedGroup({ ...editedGroup, avatar: e.target.value })}
-                    className="form-control"
-                  />
-                ) : (
-                  group.avatar
-                )}
-              </td>
-              <td>{group.active ? "Ativo" : "Inativo"}</td>
-              <td>
-                {editingGroupId === group.groupId ? (
-                  <div>
-                    <button className="btn btn-success btn-sm mr-2" onClick={handleSave}>
-                      Salvar
-                    </button>
-                    <button className="btn btn-danger btn-sm" onClick={handleCancelEdit}>
-                      Cancelar
-                    </button>
-                  </div>
-                ) : (
-                  <div>
-                    <button className="btn btn-primary btn-sm mr-2" onClick={() => handleEdit(group.groupId)}>
-                      Editar
-                    </button>
-                    <button className="btn btn-danger btn-sm" onClick={() => handleDelete(group.groupId)}>
-                      Excluir
-                    </button>
-                  </div>
-                )}
-              </td>
+    <div>
+      <CustomHeader></CustomHeader>
+      <div className="container mt-4">
+        <h1 className="text-center">Lista de Grupos</h1>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Departamento</th>
+              <th>Email</th>
+              <th>Avatar</th>
+              <th>Status</th>
+              <th>Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {groups.map((group) => (
+              <tr key={group.groupId}>
+                <td>{group.groupId}</td>
+                <td>
+                  {editingGroupId === group.groupId ? (
+                    <input
+                      type="text"
+                      value={editedGroup.name}
+                      onChange={(e) => setEditedGroup({ ...editedGroup, name: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    group.name
+                  )}
+                </td>
+                <td>
+                  {editingGroupId === group.groupId ? (
+                    <select
+                      onChange={(e) => setEditedGroup({ ...editedGroup, departmentId: e.target.value })}
+                      name="departmentId"
+                      id="departmentId"
+                      value={editedGroup.departmentId}
+                      className="form-control"
+                    >
+                      <option value="">Selecione um departamento</option>
+                      {departmentList.map((department) => (
+                        <option key={department.departmentId} value={department.departmentId}>
+                          {department.name}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    group.depName
+                  )}
+                </td>
+                <td>
+                  {editingGroupId === group.groupId ? (
+                    <input
+                      type="text"
+                      value={editedGroup.email}
+                      onChange={(e) => setEditedGroup({ ...editedGroup, email: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    group.email
+                  )}
+                </td>
+                <td>
+                  {editingGroupId === group.groupId ? (
+                    <input
+                      type="text"
+                      value={editedGroup.avatar}
+                      onChange={(e) => setEditedGroup({ ...editedGroup, avatar: e.target.value })}
+                      className="form-control"
+                    />
+                  ) : (
+                    group.avatar
+                  )}
+                </td>
+                <td>{group.active ? "Ativo" : "Inativo"}</td>
+                <td>
+                  {editingGroupId === group.groupId ? (
+                    <div>
+                      <button className="btn btn-success btn-sm mr-2" onClick={handleSave}>
+                        Salvar
+                      </button>
+                      <button className="btn btn-danger btn-sm" onClick={handleCancelEdit}>
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button className="btn btn-primary btn-sm mr-2" onClick={() => handleEdit(group.groupId)}>
+                        Editar
+                      </button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDelete(group.groupId)}>
+                        Excluir
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

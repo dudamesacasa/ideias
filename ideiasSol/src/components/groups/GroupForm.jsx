@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { insertGroup, getEmployee, getDepartments } from "../../services/api";
 import Select from "react-select";
+import CustomHeader from "../header/Header";
 
 const GroupForm = () => {
   const [formData, setFormData] = useState({
@@ -129,98 +130,113 @@ const GroupForm = () => {
 
   return (
     <div>
-      <h2>Adicionar Grupo</h2>
-      <form onSubmit={handleInsertGroup}>
-        <div className="form-group">
-          <label htmlFor="name">Nome:</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="form-control"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="departmentId">Departamento</label>
-          <Select
-            name="departmentId"
-            id="departmentId"
-            value={selectedDepartment}
-            onChange={(selectedOption) => {
-              setSelectedDepartment(selectedOption);
-              setFormData({ ...formData, departmentId: selectedOption.value });
-            }}
-            options={options}
-            isSearchable
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="form-control"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="active">Ativo:</label>
-          <input type="checkbox" name="active" id="active" checked={formData.active} onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label>Participantes do Grupo:</label>
-          <ul className="list-group">
-            {availableEmployees.map((employee) => (
-              <li key={employee.employeeId} className="list-group-item">
-                <div className="form-check">
-                  <label className="form-check-label">
-                    <input
-                      type="checkbox"
-                      value={employee.employeeId}
-                      checked={selectedMembers.includes(employee.employeeId)}
-                      onChange={() => handleMemberSelection(employee.employeeId)}
-                    />
-                    {employee.name}
-                  </label>
-                </div>
-                <div className="form-check form-check-inline ml-4">
-                  <label className="form-check-label">
-                    <input
-                      type="checkbox"
-                      checked={employee.isLeader}
-                      onChange={() => handleLeaderSelection(employee.employeeId)}
-                    />
-                    Líder
-                  </label>
-                </div>
-                <div className="form-check form-check-inline ml-4">
-                  <label className="form-check-label">
-                    <input
-                      type="checkbox"
-                      checked={employee.isReporter}
-                      onChange={() => handleReporterSelection(employee.employeeId)}
-                    />
-                    Relator
-                  </label>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="form-group">
-          <label htmlFor="avatar">Avatar:</label>
-          <input type="file" name="avatar" id="avatar" onChange={handleChange} className="form-control-file" />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Adicionar Grupo
-        </button>
-      </form>
+      <CustomHeader></CustomHeader>
+      <div className="container mt-4">
+        <h2>Adicionar Grupo</h2>
+        <form onSubmit={handleInsertGroup}>
+          <div className="form-group p-2">
+            <label htmlFor="name">Nome:</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
+          <div className="form-group p-2">
+            <label htmlFor="departmentId">Departamento</label>
+            <Select
+              name="departmentId"
+              id="departmentId"
+              value={selectedDepartment}
+              onChange={(selectedOption) => {
+                setSelectedDepartment(selectedOption);
+                setFormData({ ...formData, departmentId: selectedOption.value });
+              }}
+              options={options}
+              isSearchable
+            />
+          </div>
+          <div className="form-group p-2">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
+          <div className="form-group p-2">
+            <label className="form-check-label" htmlFor="active">
+              Ativo:
+            </label>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              name="active"
+              id="active"
+              checked={formData.active}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group p-2">
+            <label>Participantes do Grupo:</label>
+            <ul className="list-group">
+              {availableEmployees.map((employee) => (
+                <li key={employee.employeeId} className="list-group-item">
+                  <div className="form-check">
+                    <label className="form-check-label">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={employee.employeeId}
+                        checked={selectedMembers.includes(employee.employeeId)}
+                        onChange={() => handleMemberSelection(employee.employeeId)}
+                      />
+                      {employee.name}
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline ml-4">
+                    <label className="form-check-label">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        checked={employee.isLeader}
+                        onChange={() => handleLeaderSelection(employee.employeeId)}
+                      />
+                      Líder
+                    </label>
+                  </div>
+                  <div className="form-check form-check-inline ml-4">
+                    <label className="form-check-label">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        checked={employee.isReporter}
+                        onChange={() => handleReporterSelection(employee.employeeId)}
+                      />
+                      Relator
+                    </label>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="form-group">
+            <label htmlFor="avatar">Avatar:</label>
+            <input type="file" name="avatar" id="avatar" onChange={handleChange} className="form-control-file" />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Adicionar Grupo|
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
