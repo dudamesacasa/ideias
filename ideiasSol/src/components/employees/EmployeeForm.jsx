@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { getDepartments, getGroups, insertEmployee } from "../../services/api";
 import Select from "react-select";
 import CustomHeader from "../header/Header";
@@ -52,12 +52,8 @@ const EmployeeForm = () => {
   const handleSubmit = async () => {
     try {
       const response = await insertEmployee(formData);
-      console.log("formData");
-      console.log(formData);
       if (response.status === 200) {
         alert("Funcionário inserido com sucesso!");
-        console.log("response");
-        console.log(response);
 
         setFormData({
           name: "",

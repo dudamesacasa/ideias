@@ -88,7 +88,6 @@ const GroupsList = () => {
   };
 
   const handleDelete = async (groupId) => {
-    console.log("handleDelete");
     try {
       const response = await deleteGroup(groupId);
 

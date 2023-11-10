@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { AuthProvider, AuthContext } from "../contexts/auth";
+
 
 import IdeiasForm from "../components/ideias/IdeiasForm";
 import IdeiasList from "../components/ideias/IdeiasList";
@@ -15,13 +15,12 @@ import DepartmentsList from "../components/departments/DepartmentsList";
 import UsersForm from "../components/users/UsersForm";
 import UsersList from "../components/users/UsersList";
 import IdeiasRanking from "../components/ranking/ranking";
-// import EmployeeAttendanceControl from "../components/frequency/FrequencyForm";
 import Initial from "../components/initial/initial";
 import LoginForm from "../components/auth/LoginFrom";
 
 const AppRoutes = () => {
   const Private = ({ children }) => {
-    const { authenticated, loading } = useContext(AuthContext);
+    const { authenticated, loading, role } = useContext(AuthContext);
 
     if (loading) {
       return <div className="loading">Loading...</div>;
@@ -30,6 +29,29 @@ const AppRoutes = () => {
     if (!authenticated) {
       return <Navigate to="/login" />;
     }
+
+    console.log('role')
+    console.log(role)
+
+    if (role === undefined) {
+      return <Navigate to="/login" />;
+    }
+
+    if (role === "GESTOR" && !["/ideiasList", "/ranking"].includes(window.location.pathname)) {
+      return <Navigate to="/login" />;
+    }
+
+    if (role === "GRUPO" && !["/insertIdeias", "/ideiasList", "/ranking"].includes(window.location.pathname)) {
+      return <Navigate to="/login" />;
+    }
+
+    if (
+      (role === "LÍDER" || role === "RELATOR") &&
+      !["/insertIdeias", "/ideiasList", "/ranking", "/frequency"].includes(window.location.pathname)
+    ) {
+      return <Navigate to="/login" />;
+    }
+
     return children;
   };
 
@@ -37,23 +59,116 @@ const AppRoutes = () => {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Initial/>}></Route>
-          <Route path="/insertIdeias" element={<IdeiasForm />}></Route>
-          <Route path="/ideiasList" element={<IdeiasList />}></Route>
-          <Route path="/ideiasDetails" element={<IdeiaDetail />}></Route>
-          <Route path="/insertEmployee" element={<EmployeeForm />}></Route>          
-          <Route path="/employeeList" element={<EmployeeList />}></Route>
-          <Route path="/insertGroups" element={<GroupForm />}></Route>
-          <Route path="/groupsList" element={<GroupsList />}></Route>
-          <Route path="/insertDepartment" element={<DepartmentForm />}></Route>
-          <Route path="/departmentsList" element={<DepartmentsList />}></Route>     
-          <Route path="/insertUsers" element={<UsersForm />}></Route>     
-          <Route path="/usersList" element={<UsersList />}></Route>     
-          <Route path="/ranking" element={<IdeiasRanking />}></Route>  
-          <Route path="/login" element={<LoginForm />}></Route>  
-          {/* <Route path="/frequency" element={<EmployeeAttendanceControl />}></Route>      */}
-
-
+          <Route path="/" element={<Initial />}></Route>
+          <Route path="/login" element={<LoginForm />}></Route>
+          <Route
+            exact
+            path="/insertIdeias"
+            element={
+              <Private>
+                <IdeiasForm />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/ideiasList"
+            element={
+              <Private>
+                <IdeiasList />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/ideiasDetails"
+            element={
+              <Private>
+                <IdeiaDetail />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/insertEmployee"
+            element={
+              <Private>
+                <EmployeeForm />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/employeeList"
+            element={
+              <Private>
+                <EmployeeList />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/insertGroups"
+            element={
+              <Private>
+                <GroupForm />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/groupsList"
+            element={
+              <Private>
+                <GroupsList />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/insertDepartment"
+            element={
+              <Private>
+                <DepartmentForm />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/departmentsList"
+            element={
+              <Private>
+                <DepartmentsList />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/insertUsers"
+            element={
+              <Private>
+                <UsersForm />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/usersList"
+            element={
+              <Private>
+                <UsersList />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/ranking"
+            element={
+              <Private>
+                <IdeiasRanking />
+              </Private>
+            }
+          ></Route>
         </Routes>
       </AuthProvider>
     </Router>

@@ -86,7 +86,6 @@ const DepartmentsList = () => {
   };
 
   const handleDelete = async (departmentId) => {
-    console.log("handleDelete");
     try {
       const response = await deleteDepartment(departmentId);
 

@@ -108,7 +108,6 @@ const EmployeeList = () => {
   };
 
   const handleDelete = async (employeeId) => {
-    console.log("handleDelete");
     try {
       const response = await deleteEmployee(employeeId);
 

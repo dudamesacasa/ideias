@@ -16,40 +16,40 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const recoveredUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-
+    
     if (recoveredUser && token) {
       setUser(JSON.parse(recoveredUser));
-      setRole(role)
+      setRole(role);
       api.defaults.headers.Authorization = `Bearer ${token}`;
     }
 
     setLoading(false);
   }, []);
 
-    const login = async (username, password) => {
-
+  const login = async (username, password) => {
     const response = await createSession(username, password);
 
     const loggedUser = response.data.username;
     const role = response.data.type;
     const token = response.data.accessToken;
-    
+
     localStorage.setItem("user", JSON.stringify(loggedUser));
     localStorage.setItem("token", token);
-    localStorage.setItem("role", role);
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
     setUser(loggedUser);
     setRole(role);
     navigate("/ideiasList");
+
+    console.log('role auth')
+    console.log(role)
   };
 
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    // localStorage.removeItem("role");
 
     axios.defaults.headers.Authorization = null;
     setUser(null);
@@ -57,9 +57,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ authenticated: !!user, user, loading, login, logout, role }}
-    >
+    <AuthContext.Provider value={{ authenticated: !!user, user, loading, login, logout, role }}>
       {children}
     </AuthContext.Provider>
   );

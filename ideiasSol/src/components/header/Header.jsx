@@ -2,14 +2,18 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import image from "../../assets/img/lamp.png";
+import { AuthProvider, AuthContext } from "../../contexts/auth";
+import { useContext } from 'react';
 
 
 const CustomHeader = () => {
-  const userType = localStorage.getItem("role");
+  // const role = localStorage.getItem("role");
+  const { authenticated, loading, role } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("role");    
+    // localStorage.removeItem("role");    
     localStorage.removeItem("token");    
     localStorage.removeItem("user");    
     navigate("/login");
@@ -33,7 +37,7 @@ const CustomHeader = () => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-            {userType === "GESTOR" && (
+            {role === "GESTOR" && (
               <Nav>
                 <NavDropdown title="OPÇÕES" id="basic-nav-dropdown">
                   <NavDropdown.Item as={Link} to="/ideiasList">
@@ -45,7 +49,7 @@ const CustomHeader = () => {
                 </NavDropdown>
               </Nav>
             )}
-            {userType === "GRUPO" && (
+            {role === "GRUPO" && (
               <Nav>
                 <NavDropdown title="OPÇÕES" id="basic-nav-dropdown">
                   <NavDropdown.Item as={Link} to="/insertIdeias">
@@ -60,7 +64,7 @@ const CustomHeader = () => {
                 </NavDropdown>
               </Nav>
             )}
-            {(userType === "LÍDER" || userType === "RELATOR") && (
+            {(role === "LÍDER" || role === "RELATOR") && (
               <Nav>
                 <NavDropdown title="OPÇÕES" id="basic-nav-dropdown">
                   <NavDropdown.Item as={Link} to="/insertIdeias">
@@ -78,7 +82,7 @@ const CustomHeader = () => {
                 </NavDropdown>
               </Nav>
             )}
-            {userType === "ADMIN" && (
+            {role === "ADMIN" && (
               <Nav>
                 <NavDropdown title="OPÇÕES" id="basic-nav-dropdown">
                   <NavDropdown.Item as={Link} to="/ideiasList">

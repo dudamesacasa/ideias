@@ -12,7 +12,6 @@ const IdeiaDetail = ({ ideia }) => {
         const response = await getIdeiasDetails(ideia);
         setIdeiasList(response.data);
         // setLoading(false);
-        console.log(response.data);
       } catch (error) {
         console.error("Erro ao buscar ideia", error);
         // setLoading(false);

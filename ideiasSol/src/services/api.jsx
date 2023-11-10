@@ -13,6 +13,10 @@ export const createSession = async (username, password) => {
   return api.post("/login", { username, password });
 };
 
+export const getUserLogin = async (username, password) => {
+  return api.post("/getUserLogin", { username, password });
+};
+
 export const getDepartments = async () => {
   return api.get("/getDepartments");
 };
@@ -42,12 +46,10 @@ export const updateGroup = async (editingGroupId, editedGroup) => {
 }
 
 export const insertGroup = async (groupData) => {
-  console.log(groupData)
   return api.post("/insertGroup", {groupData});
 }
 
 export const insertIdeia = async (formData) => {
-  console.log(formData)
     return api.post("/insertIdeia", {formData});
 }
 
@@ -69,7 +71,6 @@ export const updateIdeia = async (editingIdeiaId, editedData) => {
 }
 
 export const insertEmployee = async (formData) => {
-  console.log(formData)
     return api.post("/insertEmployee", {formData});
 }
 
@@ -90,7 +91,6 @@ export const updateEmployee = async (editingEmployeeId, editedEmployee) => {
 }
 
 export const insertUser = async (formData) => {
-  console.log(formData)
     return api.post("/insertUser", {formData});
 }
 

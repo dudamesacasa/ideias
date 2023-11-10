@@ -34,7 +34,6 @@ const IdeiasList = () => {
         const response = await getIdeias();
         setIdeiasList(response.data);
         setLoading(false);
-        console.log(response.data);
       } catch (error) {
         console.error("Erro ao buscar ideias:", error);
         setLoading(false);
@@ -86,9 +85,6 @@ const IdeiasList = () => {
     setEditingIdeiaId(ideiaId);
 
     const ideiaToEdit = ideiasList.find((ideia) => ideia.ideiaId === ideiaId);
-
-    console.log("ideiaToEdit");
-    console.log(ideiaToEdit);
 
     const selectedPerformerOption = options.find((option) => option.value === ideiaToEdit.performer_id);
 

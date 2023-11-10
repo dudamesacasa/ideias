@@ -11,6 +11,8 @@ const employeeRouter = require("./employees.js")
 const groupsRouter = require("./groups.js"); 
 const usersRouter = require("./users.js");
 const rankingRouter = require("./ranking.js")
+const userLoginRouter = require("./userLogin.js")
+
 
 const app = express();
 
@@ -26,8 +28,6 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/login", (req, res) => {  
-
-  console.log('chegou no back end')
   const username = req.body.username;
   const password = req.body.password;
 
@@ -92,6 +92,9 @@ app.use("/deleteUser", usersRouter);
 app.use("/updateUser", usersRouter);
 
 app.use("/getIdeiasRanking", rankingRouter);
+
+app.use("/getUserLogin", userLoginRouter);
+
 
 
 
