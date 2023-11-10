@@ -68,12 +68,13 @@ const LoginForm = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <button
+              type="button"
               onClick={togglePasswordVisibility}
               style={{ border: "none", background: "transparent", cursor: "pointer" }}
             >
               {showPassword ? "👁️" : "👁️"}
             </button>
-            
+
             <button className="btn btn-primary btn-block" type="submit">
               Submit
             </button>

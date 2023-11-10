@@ -6,15 +6,24 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "ideiassol2",
+  database: "ideiassol",
 });
 
 router.post("/", (req, res) => {
   const formData = req.body.formData;
+
+  if (formData.type === "ADMIN") {
+    formData.bond = 0;
+  };
+
+
   const data = Object.values(formData);
 
+  console.log('formData')
+  console.log(formData)
+
   const sqlInsertUser =
-    "INSERT INTO users (user, password, active, type) values (?)";
+    "INSERT INTO users (user, password, active, type, bond) values (?)";
   db.query(sqlInsertUser, [data], (err, results) => {
     if (err) {
       console.error("Erro ao inserir funcionário", err);
@@ -30,7 +39,7 @@ router.put("/:editingUserId", (req, res) => {
   const editedData = req.body;
 
   const sqlUpdateUser =
-    'UPDATE users SET user = ?, active = ?, type = ? WHERE userId = ?';
+    'UPDATE users SET user = ?, active = ? WHERE userId = ?';
 
   db.query(
     sqlUpdateUser,
@@ -53,7 +62,7 @@ router.put("/:editingUserId", (req, res) => {
  
 router.get("/", (req, res) => {
   const sqlSelect =
-    "SELECT users.userId, users.user, users.active, users.type from users;";
+    "SELECT users.userId, users.user, users.active, users.type, users.bond, groupsol.name as groupName, employee.name as employeeName from users left join groupsol on (users.type = 'GRUPO' or users.type = 'LÍDER' OR users.type = 'RELATOR') and groupsol.groupId = users.bond left join employee on users.type = 'GESTOR' and employee.employeeId = users.bond;";
 
   db.query(sqlSelect, (err, result) => {
     if (err) {

@@ -50,7 +50,9 @@ create table users (
     user varchar (20) not null,
     password varchar (200) not null,
     active tinyint not null,
-    type enum ('GESTOR', 'ADMIN', 'GRUPO', "LÍDER", "RELATOR") not null
+    type enum ('GESTOR', 'ADMIN', 'GRUPO', "LÍDER", "RELATOR") not null,
+    bond integer not null
+    
 );
 
 create table approvers (

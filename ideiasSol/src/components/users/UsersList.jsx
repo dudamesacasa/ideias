@@ -99,6 +99,7 @@ const UsersList = () => {
             <th>Usuário</th>
             <th>Status</th>
             <th>Tipo</th>
+            <th>Vínculo</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -134,17 +135,13 @@ const UsersList = () => {
                   "Inativo"
                 )}
               </td>
+              <td>{user.type}</td>
               <td>
-                {editingUserId === user.userId ? (
-                  <input
-                    type="text"
-                    value={editedUser.type}
-                    onChange={(e) => setEditedUser({ ...editedUser, type: e.target.value })}
-                    className="form-control"
-                  />
-                ) : (
-                  user.type
-                )}
+                {user.type === "GESTOR"
+                  ? user.employeeName
+                  : user.type === "GRUPO" || user.type === "LÍDER" || user.type === "RELATOR"
+                  ? user.groupName
+                  : "ADMIN"}
               </td>
               <td>
                 {editingUserId === user.userId ? (
