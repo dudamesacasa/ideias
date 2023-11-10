@@ -46,7 +46,6 @@ router.put("/:editingUserId", (req, res) => {
     [
       editedData.user,
       editedData.active,
-      editedData.type,
       userId,
     ],
     (err, result) => {
