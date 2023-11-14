@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import { AuthProvider, AuthContext } from "../contexts/auth";
-
+import { AuthContext, AuthProvider } from "../contexts/auth";
 
 import IdeiasForm from "../components/ideias/IdeiasForm";
 import IdeiasList from "../components/ideias/IdeiasList";

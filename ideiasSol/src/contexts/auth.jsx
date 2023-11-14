@@ -1,8 +1,6 @@
-import React, { createContext, useState, useEffect, state } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
-
 import { useNavigate } from "react-router-dom";
-
 import { api, createSession } from "../services/api";
 
 export const AuthContext = createContext();
@@ -16,10 +14,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const recoveredUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
-    
+
     if (recoveredUser && token) {
       setUser(JSON.parse(recoveredUser));
-      setRole(role);
+      const savedRole = localStorage.getItem("role");
+      setRole(savedRole);
       api.defaults.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -30,26 +29,24 @@ export const AuthProvider = ({ children }) => {
     const response = await createSession(username, password);
 
     const loggedUser = response.data.username;
-    const role = response.data.type;
+    const role = response.data.type; 
     const token = response.data.accessToken;
 
     localStorage.setItem("user", JSON.stringify(loggedUser));
     localStorage.setItem("token", token);
+    localStorage.setItem("role", role);
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
     setUser(loggedUser);
     setRole(role);
     navigate("/ideiasList");
-
-    console.log('role auth')
-    console.log(role)
   };
 
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    // localStorage.removeItem("role");
+    localStorage.removeItem("role"); 
 
     axios.defaults.headers.Authorization = null;
     setUser(null);

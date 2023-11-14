@@ -22,60 +22,8 @@ router.get("/", (req, res) => {
   });
 });
 
-// router.post("/", (req, res) => {
-//   const formData = req.body.formData;
-//   const data = Object.values(formData);
-
-//   console.log(data)
-
-//   const sqlInsertGroups = "INSERT INTO groupSol (name, departmentId, email, avatar, active) values (?)";
-//   db.query(sqlInsertGroups, [data], (err, results) => {
-//     if (err) {
-//       console.error("Erro ao inserir grupo", err);
-//       res.status(500).json({ error: "Erro interno do servidor. Não foi possível inserir o grupo" });
-//       return;
-//     }
-//     res.status(200).json(results);
-//   });
-// });
-
-// router.post("/", (req, res) => {
-//   const groupData = req.body.groupData;
-//   const groupMembers = req.body.groupData.members;
-
-
-//   console.log(groupData)
-
-//   const sqlInsertGroups = "INSERT INTO groupSol (name, departmentId, email, avatar, active) VALUES (?)";
-//   db.query(sqlInsertGroups, [groupData], (err, results) => {
-//     if (err) {
-//       console.error("Erro ao inserir grupo", err);
-//       console.log(err)
-//       res.status(500).json({ error: "Erro interno do servidor. Não foi possível inserir o grupo" });
-//       return;
-//     }
-
-//     const groupId = results.insertId; 
-
-//     if (members && members.length > 0) {
-//       const membersValues = members.map((memberId) => [memberId, groupId, 'normal']);
-//       const sqlInsertMembers = "INSERT INTO groupsMembers (memberId, groupId, type) VALUES ?";
-//       db.query(sqlInsertMembers, [membersValues], (err, memberResults) => {
-//         if (err) {
-//           console.error("Erro ao inserir membros no grupo", err);
-//           res.status(500).json({ error: "Erro ao adicionar membros ao grupo" });
-//         } else {
-//           res.status(200).json({ groupId: groupId, message: "Grupo inserido com sucesso!" });
-//         }
-//       });
-//     } else {
-//       res.status(200).json({ groupId: groupId, message: "Grupo inserido com sucesso!" });
-//     }
-//   });
-// });
 
 router.post("/", (req, res) => {
-  // const { name, departmentId, email, avatar, active, members } = req.body;
   const name = req.body.groupData.name;
   const departmentId = req.body.groupData.departmentId;
   const email = req.body.groupData.email;
