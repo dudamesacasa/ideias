@@ -11,15 +11,15 @@ const DepartmentForm = () => {
     executioner: 0,
     active: 1,
   });
-
   const [employeeList, setEmployeeList] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const response = await getEmployee();
       setEmployeeList(response.data);
-      // setLoading(false);
+      setLoading(false);
     })();
   }, []);
 
@@ -32,6 +32,7 @@ const DepartmentForm = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
+
 
   const handleInsertDepartment = async (e) => {
     e.preventDefault();
@@ -52,7 +53,7 @@ const DepartmentForm = () => {
       }
     } catch (error) {
       console.error(error);
-      alert("Erro ao inserir departamento!");
+      alert(error.response.data.error);
     }
   };
 
@@ -60,6 +61,10 @@ const DepartmentForm = () => {
     value: employee.employeeId,
     label: employee.name,
   }));
+
+  if (loading) {
+    return <div>Loading...</div>
+  } 
 
   return (
     <div>
@@ -69,7 +74,7 @@ const DepartmentForm = () => {
         <h2 className="text-center">Adicionar Departamento</h2>
         <form onSubmit={handleInsertDepartment}>
           <div className="form-group p-2">
-            <label htmlFor="name">Nome:</label>
+            <label htmlFor="name">Nome</label>
             <input
               type="text"
               name="name"
@@ -81,17 +86,7 @@ const DepartmentForm = () => {
             />
           </div>
           <div className="form-group p-2">
-            <label htmlFor="manager_id">ID do Gerente:</label>
-            {/* <input
-              type="number"
-              name="manager_id"
-              id="manager_id"
-              value={formData.manager_id}
-              onChange={handleChange}
-              className="form-control"
-              required
-            /> */}
-
+            <label htmlFor="manager_id">Gestor</label>
             <Select
               name="manager_id"
               id="manager_id"
@@ -105,7 +100,7 @@ const DepartmentForm = () => {
             />
           </div>
           <div className="form-group p-2">
-            <label htmlFor="executioner">ID do Executor:</label>
+            <label htmlFor="executioner">Executor&nbsp; </label>
 
             <input
               className="form-check-input"
@@ -118,7 +113,7 @@ const DepartmentForm = () => {
           </div>
           <div className="form-group p-2">
             <label className="form-check-labe" htmlFor="active">
-              Ativo:
+              Ativo&nbsp;
             </label>
             <input
               className="form-check-input"

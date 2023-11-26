@@ -3,26 +3,28 @@ import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import image from "../../assets/img/lamp.png";
 import { AuthProvider, AuthContext } from "../../contexts/auth";
-import { useContext } from 'react';
+import { useContext } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { FaList, FaSignOutAlt } from "react-icons/fa";
+import { MdOutlineFormatListBulleted } from "react-icons/md";
 
 const CustomHeader = () => {
-  // const role = localStorage.getItem("role");
   const { authenticated, loading, role } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // localStorage.removeItem("role");    
-    localStorage.removeItem("token");    
-    localStorage.removeItem("user");    
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
   return (
     <header className="bg-secondary py-4">
       <div className="container-lg">
-        <Navbar bg="secondary">
+        <Navbar expand="lg" bg="secondary">
           <Navbar.Brand>
             <Link to="/ideiasList">
               <img
@@ -39,42 +41,42 @@ const CustomHeader = () => {
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
             {role === "GESTOR" && (
               <Nav>
-                <NavDropdown title="OPÇÕES" id="basic-nav-dropdown">
+                <NavDropdown title={<MdOutlineFormatListBulleted size="30px" />} id="basic-nav-dropdown">
                   <NavDropdown.Item as={Link} to="/ideiasList">
-                    Visualizar Ideias
+                    Ideias
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/ranking">
-                    Visualizar Ranking
+                    Ranking
                   </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             )}
             {role === "GRUPO" && (
               <Nav>
-                <NavDropdown title="OPÇÕES" id="basic-nav-dropdown">
+                <NavDropdown title={<MdOutlineFormatListBulleted size="30px" />} id="basic-nav-dropdown">
                   <NavDropdown.Item as={Link} to="/insertIdeias">
                     Cadastrar Ideias
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/ideiasList">
-                    Visualizar Ideias
+                    Ideias
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/ranking">
-                    Visualizar Ranking
+                    Ranking
                   </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             )}
             {(role === "LÍDER" || role === "RELATOR") && (
               <Nav>
-                <NavDropdown title="OPÇÕES" id="basic-nav-dropdown">
+                <NavDropdown title={<MdOutlineFormatListBulleted size="30px" />} id="basic-nav-dropdown">
                   <NavDropdown.Item as={Link} to="/insertIdeias">
                     Cadastrar Ideias
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/ideiasList">
-                    Visualizar Ideias
+                    Ideias
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/ranking">
-                    Visualizar Ranking
+                    Ranking
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/frequency">
                     Controle de Frequencia
@@ -84,44 +86,45 @@ const CustomHeader = () => {
             )}
             {role === "ADMIN" && (
               <Nav>
-                <NavDropdown title="OPÇÕES" id="basic-nav-dropdown">
+                <NavDropdown title={<MdOutlineFormatListBulleted size="30px" />} id="basic-nav-dropdown">
                   <NavDropdown.Item as={Link} to="/ideiasList">
-                    Visualizar Ideias
+                    Ideias
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/insertEmployee">
                     Cadastrar Funcionários
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/employeeList">
-                    Visualizar Funcionários
+                    Funcionários
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/insertGroups">
                     Cadastrar Grupos
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/groupsList">
-                    Visualizar Grupos
+                    Grupos
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/insertDepartment">
                     Cadastrar Departamentos
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/departmentsList">
-                    Visualizar Departamentos
+                    Departamentos
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/insertUsers">
                     Cadastrar Usuários
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/usersList">
-                    Visualizar Usuários
+                    Usuários
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/ranking">
-                    Visualizar Ranking
+                    Ranking
                   </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             )}
-            <Nav.Link onClick={handleLogout} >Logout</Nav.Link>
+            <Nav.Link onClick={handleLogout}>
+              <FaSignOutAlt size="30px" />
+            </Nav.Link>
           </Navbar.Collapse>
         </Navbar>
-
       </div>
     </header>
   );

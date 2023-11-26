@@ -12,6 +12,10 @@ const groupsRouter = require("./groups.js");
 const usersRouter = require("./users.js");
 const rankingRouter = require("./ranking.js")
 const userLoginRouter = require("./userLogin.js")
+const employeeGroupRouter = require("./employeeGroups.js");
+const groupMemberRouter = require("./groupMembers.js");
+
+
 
 
 const app = express();
@@ -43,10 +47,6 @@ app.post("/login", (req, res) => {
       } else {
 
         const type = result[0].type;
-
-        console.log('type')
-        console.log(type)
-        
 
         const accessToken = jwt.sign(
           { username: username, role: type },
@@ -95,7 +95,10 @@ app.use("/getIdeiasRanking", rankingRouter);
 
 app.use("/getUserLogin", userLoginRouter);
 
+app.use("/getEmployeesGroup", employeeGroupRouter);
 
+app.use("/getGroupMembers", groupMemberRouter);
+app.use("/deleteGroupMembers", groupMemberRouter);
 
 
 db.connect((err) => {

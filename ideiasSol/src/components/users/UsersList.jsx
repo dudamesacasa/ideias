@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getUsers, updateUser, deleteUser } from "../../services/api";
 import CustomHeader from "../header/Header";
+import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -94,7 +96,14 @@ const UsersList = () => {
     <div>
       <CustomHeader></CustomHeader>
       <div className="container mt-4">
-        <h1 className="text-center">Lista de Usuários</h1>
+        <div className="row text-center justify-content-end">
+          <h1>Lista de Usuários</h1>
+          <div className="col-auto justify-content-end">
+            <Link to="/insertUsers" className="btn btn-primary">
+              +
+            </Link>
+          </div>
+        </div>
         <table className="table">
           <thead>
             <tr>
@@ -103,7 +112,7 @@ const UsersList = () => {
               <th>Status</th>
               <th>Tipo</th>
               <th>Vínculo</th>
-              <th>Ações</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -152,19 +161,21 @@ const UsersList = () => {
                   {editingUserId === user.userId ? (
                     <div>
                       <button className="btn btn-success btn-sm mr-2" onClick={handleSave}>
-                        Salvar
+                        <FaSave />
                       </button>
+                      &nbsp;
                       <button className="btn btn-danger btn-sm" onClick={handleCancelEdit}>
-                        Cancelar
+                        <FaTimes />
                       </button>
                     </div>
                   ) : (
                     <div>
                       <button className="btn btn-primary btn-sm mr-2" onClick={() => handleEdit(user.userId)}>
-                        Editar
+                        <FaEdit />
                       </button>
+                      &nbsp;
                       <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user.userId)}>
-                        Excluir
+                        <FaTrash /> 
                       </button>
                     </div>
                   )}

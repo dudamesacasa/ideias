@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Select from "react-select";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
+
 import CustomHeader from "../header/Header";
+
 import { getDepartments, updateDepartment, deleteDepartment, getEmployee } from "../../services/api";
 
 const DepartmentsList = () => {
   const [departments, setDepartments] = useState([]);
   const [employeeList, setEmployeeList] = useState([]);
   const [editingDepartmentId, setEditingDepartmentId] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+
   const [editedDepartment, setEditedDepartment] = useState({
     departmentId: null,
     name: "",
     manager_id: null,
     executioner: 0,
     active: 0,
+    nameEdited: false,
   });
 
   useEffect(() => {
@@ -59,7 +67,10 @@ const DepartmentsList = () => {
       setEditedDepartment({
         departmentId: departmentToEdit.departmentId,
         name: departmentToEdit.name,
-        manager_id: departmentToEdit.manager_id,
+        manager_id:
+          departmentToEdit.manager_id !== null && departmentToEdit.manager_id !== undefined
+            ? departmentToEdit.managerId
+            : departmentToEdit.employeeId,
         executioner: departmentToEdit.executioner,
         active: departmentToEdit.active,
       });
@@ -74,10 +85,12 @@ const DepartmentsList = () => {
         setEditingDepartmentId(null);
         fetchData();
       } else {
-        console.error("Erro ao editar departamento");
+        console.error("Erro ao editar departamento.");
+        alert(error.response.data.error);
       }
     } catch (error) {
-      console.error("Erro ao editar departamento", error);
+      console.error("Erro ao editar departamento.", error);
+      alert(error.response.data.error);
     }
   };
 
@@ -87,6 +100,11 @@ const DepartmentsList = () => {
 
   const handleDelete = async (departmentId) => {
     try {
+      const confirmDelete = window.confirm("Tem certeza que deseja excluir este departamento?");
+
+      if (!confirmDelete) {
+        return;
+      }
       const response = await deleteDepartment(departmentId);
 
       if (response.status === 200) {
@@ -94,6 +112,7 @@ const DepartmentsList = () => {
         fetchData();
       } else {
         console.error("Erro ao excluir departamento");
+        alert(error.response.data.error);
       }
     } catch (error) {
       console.error("Erro ao excluir departamento", error);
@@ -101,11 +120,23 @@ const DepartmentsList = () => {
     }
   };
 
+  const optionsEmployees = employeeList.map((employee) => ({
+    value: employee.employeeId,
+    label: employee.name,
+  }));
+
   return (
     <div>
       <CustomHeader></CustomHeader>
       <div className="container mt-4">
-        <h1 className="text-center">Lista de Departamentos</h1>
+        <div className="row text-center justify-content-end">
+          <h1>Lista de Departamentos</h1>
+          <div className="col-auto justify-content-end">
+            <Link to="/insertDepartment" className="btn btn-primary">
+              +
+            </Link>
+          </div>
+        </div>
         <table className="table">
           <thead>
             <tr>
@@ -114,7 +145,7 @@ const DepartmentsList = () => {
               <th>Gerente</th>
               <th>Executor</th>
               <th>Ativo</th>
-              <th>Ações</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -126,7 +157,9 @@ const DepartmentsList = () => {
                     <input
                       type="text"
                       value={editedDepartment.name}
-                      onChange={(e) => setEditedDepartment({ ...editedDepartment, name: e.target.value })}
+                      onChange={(e) =>
+                        setEditedDepartment({ ...editedDepartment, name: e.target.value, nameEdited: true })
+                      }
                       className="form-control"
                     />
                   ) : (
@@ -135,20 +168,18 @@ const DepartmentsList = () => {
                 </td>
                 <td>
                   {editingDepartmentId === department.departmentId ? (
-                    <select
-                      onChange={(e) => setEditedDepartment({ ...editedDepartment, manager_id: e.target.value })}
+                    <Select
                       name="manager_id"
                       id="manager_id"
-                      value={editedDepartment.manager_id}
-                      className="form-control"
-                    >
-                      <option value="">Selecione um gestor</option>
-                      {employeeList.map((employee) => (
-                        <option key={employee.employeeId} value={employee.employeeId}>
-                          {employee.name}
-                        </option>
-                      ))}
-                    </select>
+                      value={optionsEmployees.find((option) => option.value === editedDepartment.manager_id)}
+                      onChange={(selectedOption) => {
+                        setSelectedEmployee(selectedOption);
+                        setEditedDepartment({ ...editedDepartment, manager_id: selectedOption.value });
+                      }}
+                      options={optionsEmployees}
+                      isSearchable
+                      required
+                    />
                   ) : (
                     department.employeeName
                   )}
@@ -186,10 +217,11 @@ const DepartmentsList = () => {
                   {editingDepartmentId === department.departmentId ? (
                     <div>
                       <button className="btn btn-success btn-sm mr-2" onClick={handleSave}>
-                        Salvar
+                        <FaSave />
                       </button>
+                      &nbsp;
                       <button className="btn btn-danger btn-sm" onClick={handleCancelEdit}>
-                        Cancelar
+                        <FaTimes />
                       </button>
                     </div>
                   ) : (
@@ -198,10 +230,11 @@ const DepartmentsList = () => {
                         className="btn btn-primary btn-sm mr-2"
                         onClick={() => handleEdit(department.departmentId)}
                       >
-                        Editar
+                        <FaEdit />
                       </button>
+                      &nbsp;
                       <button className="btn btn-danger btn-sm" onClick={() => handleDelete(department.departmentId)}>
-                        Excluir
+                        <FaTrash />
                       </button>
                     </div>
                   )}

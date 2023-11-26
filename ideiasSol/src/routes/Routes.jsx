@@ -32,9 +32,9 @@ const AppRoutes = () => {
     console.log('role')
     console.log(role)
 
-    // if (role === undefined) {
-    //   return <Navigate to="/login" />;
-    // }
+    if (role === undefined) {
+      return <Navigate to="/login" />;
+    }
 
     if (role === "GESTOR" && !["/ideiasList", "/ranking"].includes(window.location.pathname)) {
       return <Navigate to="/login" />;

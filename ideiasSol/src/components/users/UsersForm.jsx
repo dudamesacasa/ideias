@@ -94,7 +94,6 @@ const UserForm = () => {
         setSelectedEmployee(null);
       }
     } catch (error) {
-      // console.error(error.response.data.error);
       alert(error.response.data.error);
     }
   };
@@ -195,6 +194,9 @@ const UserForm = () => {
           </div>
           {passwordError && <p className="text-danger">{passwordError}</p>}
           <div className="form-group p-2">
+            <label className="form-check-label" htmlFor="active">
+              Ativo&nbsp;
+            </label>
             <input
               type="checkbox"
               name="active"
@@ -203,9 +205,6 @@ const UserForm = () => {
               checked={formData.active}
               onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
             />
-            <label className="form-check-label" htmlFor="active">
-              Ativo
-            </label>
           </div>
           <button type="submit" className="btn btn-primary">
             Cadastrar

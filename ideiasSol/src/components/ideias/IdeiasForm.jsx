@@ -12,6 +12,7 @@ const IdeiaForm = () => {
     whereToDo: "",
     performer_id: "",
     investment: "",
+    user: "",
   });
   const [departmentList, setDepartmentList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +53,13 @@ const IdeiaForm = () => {
 
   const handleInsertIdeia = async () => {
     try {
-      const response = await insertIdeia(formData);
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const formDataWithUser = { ...formData, user };
+
+      const response = await insertIdeia(formDataWithUser);
+
+      console.log(response)
       if (response.status === 200) {
         alert("Ideia inserida com sucesso!");
 
@@ -63,6 +70,7 @@ const IdeiaForm = () => {
           whereToDo: "",
           performer_id: "",
           investment: "",
+          user: "",
         });
         setSelectedPerformer(null);
       }
@@ -92,6 +100,7 @@ const IdeiaForm = () => {
               value={formData.title}
               onChange={handleChange}
               className="form-control"
+              required
             />
           </div>
           <div className="form-group p-2">
@@ -112,6 +121,7 @@ const IdeiaForm = () => {
               onChange={handleChange}
               className="form-control"
               rows="3"
+              required
             />
           </div>
           <div className="form-group p-2">
@@ -125,6 +135,7 @@ const IdeiaForm = () => {
               onChange={handleChange}
               className="form-control"
               rows="3"
+              required
             />
           </div>
           <div className="form-group p-2">
@@ -136,6 +147,7 @@ const IdeiaForm = () => {
               value={formData.whereToDo}
               onChange={handleChange}
               className="form-control"
+              required
             />
           </div>
           <div className="form-group p-2">
@@ -150,6 +162,7 @@ const IdeiaForm = () => {
               }}
               options={options}
               isSearchable
+              required
             />
           </div>
           <div className="form-group p-2">
@@ -161,6 +174,7 @@ const IdeiaForm = () => {
               value={formData.investment}
               onChange={handleChange}
               className="form-control"
+              required
             />
           </div>
           <div className="form-group p-2">

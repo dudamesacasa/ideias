@@ -5,6 +5,7 @@ import { getIdeias, deleteIdeia, updateIdeia, getDepartments } from "../../servi
 import "bootstrap/dist/css/bootstrap.min.css";
 import IdeiaDetail from "./IdeiasDetails";
 import CustomHeader from "../header/Header";
+import { FaEdit, FaTrash, FaSave, FaTimes } from "react-icons/fa";
 
 const IdeiasList = () => {
   const [ideiasList, setIdeiasList] = useState([]);
@@ -13,9 +14,8 @@ const IdeiasList = () => {
   const [editingIdeiaId, setEditingIdeiaId] = useState(null);
   const [departmentList, setDepartmentList] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [initialValue, setInitialValue] = useState("");
 
-  const [selectedPerformer, setSelectedPerformer] = useState(initialValue);
+  const [selectedPerformer, setSelectedPerformer] = useState();
 
   const [editedData, setEditedData] = useState({
     campaign: "",
@@ -26,49 +26,69 @@ const IdeiasList = () => {
     performer_id: "",
     investment: "",
     attachments: "",
+    user: "",
   });
 
+  const userType = localStorage.getItem("role");
+
   useEffect(() => {
-    (async () => {
+    const fetchIdeias = async () => {
       try {
-        const response = await getIdeias();
-        setIdeiasList(response.data);
-        setLoading(false);
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        if (user) {
+          const response = await getIdeias(user);
+          if (response.status === 200) {
+            setIdeiasList(response.data);
+          } else {
+            console.error("Erro ao buscar ideias");
+          }
+        }
       } catch (error) {
         console.error("Erro ao buscar ideias:", error);
         setLoading(false);
       }
-    })();
+    };
 
-    (async () => {
-      const response = await getDepartments();
-      setDepartmentList(response.data);
-      setLoading(false);
-    })();
+    fetchIdeias();
+
+    const fetchDepartments = async () => {
+      try {
+        const response = await getDepartments();
+        setDepartmentList(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar departamentos:", error);
+      }
+    };
+    fetchDepartments();
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await getIdeias();
-      if (response.status === 200) {
-        setIdeiasList(response.data);
-      } else {
-        console.error("Erro ao buscar ideias");
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      if (user) {
+        const response = await getIdeias(user);
+        if (response.status === 200) {
+          setIdeiasList(response.data);
+        } else {
+          console.error("Erro ao buscar ideias");
+        }
       }
     } catch (error) {
       console.error("Erro ao buscar ideias", error);
     }
   };
 
-  // const handleChange = (e) => {
-  //   const { name, value, type, checked, files } = e.target;
-
-  //   setEditedData({ ...editedData, [name]: value });
-
-  // };
-
   const handleDelete = async (ideiaId) => {
     try {
+
+      const confirmDelete = window.confirm(`Tem certeza que deseja excluir a ideia ${ideiaId}?`);
+
+      if (!confirmDelete) {
+        return;
+      }
+
       const response = await deleteIdeia(ideiaId);
       if (response.status === 200) {
         setIdeiasList(ideiasList.filter((val) => val.ideiaId !== ideiaId));
@@ -86,8 +106,6 @@ const IdeiasList = () => {
 
     const ideiaToEdit = ideiasList.find((ideia) => ideia.ideiaId === ideiaId);
 
-    const selectedPerformerOption = options.find((option) => option.value === ideiaToEdit.performer_id);
-
     if (ideiaToEdit) {
       setEditedData({
         campaign: ideiaToEdit.campaign,
@@ -100,14 +118,18 @@ const IdeiasList = () => {
         attachments: ideiaToEdit.attachments,
       });
 
-      setSelectedPerformer(selectedPerformerOption);
+      setSelectedPerformer("");
     }
   };
 
   const handleSave = async () => {
     try {
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const editedDataWithUser = { ...editedData, user };
+
       const response = await updateIdeia(editingIdeiaId, {
-        editedData,
+        editedDataWithUser,
       });
 
       if (response.status === 200) {
@@ -156,6 +178,7 @@ const IdeiasList = () => {
                           value={editedData.campaign}
                           onChange={(e) => setEditedData({ ...editedData, campaign: e.target.value })}
                           className="form-control"
+                          required
                         />
                         <br />
                         <label htmlFor="editedDescription">Descrição:</label>
@@ -164,6 +187,7 @@ const IdeiasList = () => {
                           value={editedData.description}
                           onChange={(e) => setEditedData({ ...editedData, description: e.target.value })}
                           className="form-control"
+                          required
                         />
                         <br />
                         <label htmlFor="editedBenefits">Benefícios:</label>
@@ -172,6 +196,7 @@ const IdeiasList = () => {
                           value={editedData.benefits}
                           onChange={(e) => setEditedData({ ...editedData, benefits: e.target.value })}
                           className="form-control"
+                          required
                         />
                         <br />
                         <label htmlFor="editedWhereToDo">Onde Fazer:</label>
@@ -180,18 +205,21 @@ const IdeiasList = () => {
                           value={editedData.whereToDo}
                           onChange={(e) => setEditedData({ ...editedData, whereToDo: e.target.value })}
                           className="form-control"
+                          required
                         />
                         <br />
                         <label htmlFor="editedPerformer_id">Quem vai fazer</label>
                         <Select
-                          id="editedPerformer_id"
-                          value={selectedPerformer}
+                          name="performer_id"
+                          id="performer_id"
+                          value={options.find((option) => option.value === editedData.performer_id)}
                           onChange={(selectedOption) => {
                             setSelectedPerformer(selectedOption);
                             setEditedData({ ...editedData, performer_id: selectedOption.value });
                           }}
                           options={options}
                           isSearchable
+                          required
                         />
                         <br />
                         <label htmlFor="editedInvestment">Investimento:</label>
@@ -200,9 +228,10 @@ const IdeiasList = () => {
                           value={editedData.investment}
                           onChange={(e) => setEditedData({ ...editedData, investment: e.target.value })}
                           className="form-control"
+                          required
                         />
                         <button className="btn btn-danger" onClick={handleCancelEdit}>
-                          Cancelar Edição
+                          <FaTimes />
                         </button>
                       </>
                     ) : (
@@ -229,16 +258,16 @@ const IdeiasList = () => {
                   <div className="d-flex justify-content-between">
                     {editingIdeiaId === ideia.ideiaId ? (
                       <button className="btn btn-success" onClick={handleSave}>
-                        Salvar
+                        <FaSave />
                       </button>
-                    ) : (
+                    ) : userType === "ADMIN" ? null : (
                       <button className="btn btn-primary" onClick={() => handleEdit(ideia.ideiaId)}>
-                        Editar
+                        <FaEdit />
                       </button>
                     )}
 
                     <button className="btn btn-danger" onClick={() => handleDelete(ideia.ideiaId)}>
-                      Deletar
+                      <FaTrash />
                     </button>
                     {/* <button className="btn btn-info" onClick={() => handleDetails(ideia.ideiaId)}>
                     Detalhes

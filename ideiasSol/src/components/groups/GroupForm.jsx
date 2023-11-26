@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { insertGroup, getEmployee, getDepartments } from "../../services/api";
+import { insertGroup, getEmployeesGroup, getDepartments } from "../../services/api";
 import Select from "react-select";
 import CustomHeader from "../header/Header";
 
@@ -15,6 +15,7 @@ const GroupForm = () => {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [departmentList, setDepartmentList] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [showEmployess, setShowEmployess] = useState(false);
 
   useEffect(() => {
     loadAvailableEmployees();
@@ -22,14 +23,12 @@ const GroupForm = () => {
     (async () => {
       const response = await getDepartments();
       setDepartmentList(response.data);
-      // console.log(response.data);
-      // setLoading(false);
     })();
   }, []);
 
   const loadAvailableEmployees = async () => {
     try {
-      const response = await getEmployee();
+      const response = await getEmployeesGroup ();
       if (response.status === 200) {
         const employeesWithRoles = response.data.map((employee) => ({
           ...employee,
@@ -128,6 +127,10 @@ const GroupForm = () => {
     label: department.name,
   }));
 
+  const toggleEmployees = () => {
+    setShowEmployess(!showEmployess);
+  };
+
   return (
     <div>
       <CustomHeader></CustomHeader>
@@ -185,55 +188,62 @@ const GroupForm = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="form-group p-2">
-            <label>Participantes do Grupo:</label>
-            <ul className="list-group">
-              {availableEmployees.map((employee) => (
-                <li key={employee.employeeId} className="list-group-item">
-                  <div className="form-check">
-                    <label className="form-check-label">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value={employee.employeeId}
-                        checked={selectedMembers.includes(employee.employeeId)}
-                        onChange={() => handleMemberSelection(employee.employeeId)}
-                      />
-                      {employee.name}
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline ml-4">
-                    <label className="form-check-label">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        checked={employee.isLeader}
-                        onChange={() => handleLeaderSelection(employee.employeeId)}
-                      />
-                      Líder
-                    </label>
-                  </div>
-                  <div className="form-check form-check-inline ml-4">
-                    <label className="form-check-label">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        checked={employee.isReporter}
-                        onChange={() => handleReporterSelection(employee.employeeId)}
-                      />
-                      Relator
-                    </label>
-                  </div>
-                </li>
-              ))}
-            </ul>
+          <div className={`form-group p-2 ${showEmployess ? "" : "d-none"}`}>
+            <div className="form-group p-2">
+              <label>Participantes do Grupo:</label>
+              <ul className="list-group">
+                {availableEmployees.map((employee) => (
+                  <li key={employee.employeeId} className="list-group-item">
+                    <div className="form-check">
+                      <label className="form-check-label">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value={employee.employeeId}
+                          checked={selectedMembers.includes(employee.employeeId)}
+                          onChange={() => handleMemberSelection(employee.employeeId)}
+                        />
+                        {employee.name}
+                      </label>
+                    </div>
+                    <div className="form-check form-check-inline ml-4">
+                      <label className="form-check-label">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={employee.isLeader}
+                          onChange={() => handleLeaderSelection(employee.employeeId)}
+                        />
+                        Líder
+                      </label>
+                    </div>
+                    <div className="form-check form-check-inline ml-4">
+                      <label className="form-check-label">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={employee.isReporter}
+                          onChange={() => handleReporterSelection(employee.employeeId)}
+                        />
+                        Relator
+                      </label>
+                    </div>
+                  </li>
+                ))}
+                {/* <div className="form-group">
+                <label htmlFor="avatar">Avatar:</label>
+                <input type="file" name="avatar" id="avatar" onChange={handleChange} className="form-control-file" />
+              </div> */}
+              </ul>
+            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="avatar">Avatar:</label>
-            <input type="file" name="avatar" id="avatar" onChange={handleChange} className="form-control-file" />
+          <div>
+            <button type="button" className="btn btn-secondary" onClick={toggleEmployees}>
+              {showEmployess ? "Ocultar lista de participantes" : "Adicionar participantes"}
+            </button>
           </div>
           <button type="submit" className="btn btn-primary">
-            Adicionar Grupo|
+            Adicionar Grupo
           </button>
         </form>
       </div>

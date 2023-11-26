@@ -53,8 +53,8 @@ export const insertIdeia = async (formData) => {
     return api.post("/insertIdeia", {formData});
 }
 
-export const getIdeias = async () => {
-  return api.get("/getIdeias");
+export const getIdeias = async (user) => {
+  return api.get("/getIdeias", { params: { user } });
 };
 
 export const getIdeiasDetails = async (ideia) => {
@@ -78,9 +78,9 @@ export const getEmployee = async () => {
   return api.get("/getEmployee");
 };
 
-// export const getEmployeesGroup = async () => {
-//   return api.get("/getEmployees");
-// };
+export const getEmployeesGroup = async () => {
+  return api.get("/getEmployeesGroup");
+};
 
 export const deleteEmployee = async (employeeId) => {
   return api.delete(`/deleteEmployee/${employeeId}`);
@@ -109,3 +109,15 @@ export const updateUser = async (editingUserId, editedUser) => {
 export const getIdeiasRanking = async () => {
   return api.get("/getIdeiasRanking");
 };
+
+export const getGroupMembers = async (groupId) => {
+  return api.get("/getGroupMembers", { params: { groupId } });
+}
+
+export const deleteGroupMembers = async (memberId) => {
+  return api.delete(`/deleteGroupMembers/${memberId}`);
+}
+
+export const updateGroupMember = async (memberId, editedMember) => {
+  return api.put(`/updateGroupMember/${memberId}`, editedMember);
+}

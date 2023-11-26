@@ -11,7 +11,7 @@ const db = mysql.createConnection({
 });
 
 router.get("/", (req, res) => {
-  const sql = "SELECT groupSol.name, groupSol.groupId, department.name as depName, groupSol.email, groupSol.avatar, groupSol.active FROM groupSol join department on department.departmentID = groupSol.departmentid";
+  const sql = "SELECT groupSol.name, groupSol.groupId, department.name as depName, groupSol.departmentId, groupSol.email, groupSol.avatar, groupSol.active FROM groupSol join department on department.departmentID = groupSol.departmentid";
   db.query(sql, (err, results) => {
     if (err) {
       console.error("Erro ao buscar grupos:", err);

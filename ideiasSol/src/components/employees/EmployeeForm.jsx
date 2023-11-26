@@ -20,34 +20,39 @@ const EmployeeForm = () => {
     type: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleChangeDepartment = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
+  
   useEffect(() => {
     (async () => {
       const response = await getDepartments();
       setDepartmentList(response.data);
       setLoading(false);
     })();
-
+    
     (async () => {
       const response = await getGroups();
       setGroupList(response.data);
       setLoading(false);
     })();
   }, []);
-
-  const handleSubmit = async () => {
+  
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+  
+    setFormData((prevFormData) => {
+      if (name === "type") {
+        return { ...prevFormData, type: value };
+      } else if (type === "checkbox") {
+        return { ...prevFormData, [name]: checked ? 1 : 0 };
+      } else {
+        return { ...prevFormData, [name]: value };
+      }
+    });
+  };
+  
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
     try {
       const response = await insertEmployee(formData);
       if (response.status === 200) {
@@ -67,7 +72,7 @@ const EmployeeForm = () => {
       }
     } catch (error) {
       console.error(error);
-      setError("Erro ao inserir funcionário!");
+      alert(error.response.data.error);
     }
   };
 
@@ -75,14 +80,15 @@ const EmployeeForm = () => {
     value: department.departmentId,
     label: department.name,
   }));
+
   const optionsGroups = groupList.map((group) => ({
     value: group.groupId,
     label: group.name,
   }));
 
-  //   if (loading) {
-  //     return <div>Loading...</div>
-  //   }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -126,6 +132,7 @@ const EmployeeForm = () => {
               }}
               options={optionsDepartments}
               isSearchable
+              required
             />
           </div>
           <div className="form-group p-2">
@@ -140,32 +147,11 @@ const EmployeeForm = () => {
               }}
               options={optionsGroups}
               isSearchable
-            />
-          </div>
-          <div className="form-group p-2">
-            <label className="form-check-label" htmlFor="active">
-              Ativo: 
-            </label>
-            <input
-              type="checkbox"
-              name="active"
-              id="active"
-              className="form-check-input"
-              checked={formData.active}
-              onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+              required
             />
           </div>
           <div className="form-group p-2">
             <label htmlFor="type">Tipo:</label>
-            {/* <input
-              type="text"
-              name="type"
-              id="type"
-              className="form-control"
-              value={formData.type}
-              onChange={handleChange}
-              required
-            /> */}
             <select
               name="type"
               id="type"
@@ -178,6 +164,20 @@ const EmployeeForm = () => {
               <option value="GESTOR">GESTOR</option>
               <option value="COLABORADOR">COLABORADOR</option>
             </select>
+          </div>
+          <div className="form-group p-2">
+            <label className="form-check-label" htmlFor="active">
+              Ativo:
+            </label>
+            <input
+              type="checkbox"
+              name="active"
+              id="active"
+              className="form-check-input"
+              checked={formData.active}
+              onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
+              required
+            />
           </div>
           <button type="submit" className="btn btn-primary">
             Cadastrar

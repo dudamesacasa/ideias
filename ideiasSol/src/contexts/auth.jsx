@@ -48,9 +48,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("role"); 
 
-    axios.defaults.headers.Authorization = null;
+    api.defaults.headers.Authorization = null;
+
     setUser(null);
+    setRole(undefined);
     navigate("/");
+
   };
 
   return (
