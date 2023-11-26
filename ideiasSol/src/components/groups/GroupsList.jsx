@@ -68,6 +68,23 @@ const GroupsList = () => {
     }
   };
 
+  const handleShowMembers = async (groupId) => {
+    try {
+      const response = await getGroupMembers(groupId);
+
+      if (response.status === 200) {
+        setMembers(response.data);
+      } else {
+        console.error("Erro ao buscar membros do grupo");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar membros do grupo", error);
+    }
+
+    setShowMembers(groupId);
+  };
+
+
   const handleEdit = (groupId) => {
     setEditingGroupId(groupId);
 
@@ -82,12 +99,6 @@ const GroupsList = () => {
         active: groupToEdit.active,
       });
     }
-  };
-
-  const handleEditMembers = (groupId, memberId) => {
-    console.log('memberId  handleEditMembers')
-    console.log(memberId)
-    setEditingMemberId(memberId);
   };
 
   const handleSave = async () => {
@@ -106,6 +117,26 @@ const GroupsList = () => {
       console.error("Erro ao editar grupo", error);
     }
   };
+  
+  const handleCancelEdit = () => {
+    setEditingGroupId(null);
+  };
+
+
+  const handleEditMembers = (memberId) => {
+    console.log('memberId')
+    console.log(memberId)
+    setEditingMemberId(memberId);
+
+    const memberToEdit = members.find((member) => member.memberId === memberId);
+
+    if (memberToEdit) {
+      setEditedMember({
+        leader: memberToEdit.leader,
+        reporter: memberToEdit.reporter,
+      });
+    }
+  };
 
   const handleSaveMembers = async () => {
     try {
@@ -121,10 +152,7 @@ const GroupsList = () => {
     }
   };
 
-  const handleCancelEdit = () => {
-    setEditingGroupId(null);
-  };
-
+  
   const handleCancelEditMembers = () => {
     setEditingMemberId(null);
   };
@@ -151,7 +179,7 @@ const GroupsList = () => {
     }
   };
 
-  const handleDeleteMember = async (groudId, memberId) => {
+  const handleDeleteMember = async (memberId) => {
     try {
       const confirmDelete = window.confirm("Tem certeza que deseja excluir este membro?");
 
@@ -178,21 +206,7 @@ const GroupsList = () => {
     label: department.name,
   }));
 
-  const handleShowMembers = async (groupId) => {
-    try {
-      const response = await getGroupMembers(groupId);
-
-      if (response.status === 200) {
-        setMembers(response.data);
-      } else {
-        console.error("Erro ao buscar membros do grupo");
-      }
-    } catch (error) {
-      console.error("Erro ao buscar membros do grupo", error);
-    }
-
-    setShowMembers(groupId);
-  };
+  
 
   return (
     <div>
@@ -368,13 +382,7 @@ const GroupsList = () => {
                                   "Não"
                                 )}
                               </td>
-                              <td>
-                                {console.log('editingMemberId')}
-                                {console.log(editingMemberId)}
-                                
-                                {console.log('member.memberId')}
-                                {console.log(member.memberId)}
-
+                              <td> 
                                 {editingMemberId === member.memberId ? (
                                   <div>
                                     <button className="btn btn-success btn-sm mr-2" onClick={handleSaveMembers}>
@@ -388,7 +396,7 @@ const GroupsList = () => {
                                   <div>
                                     <button
                                       className="btn btn-primary btn-sm mr-2"
-                                      onClick={() => handleEditMembers(group.groupId, member.memberId)}
+                                      onClick={() => handleEditMembers(member.memberId)}
                                     >
                                       <FaEdit />
                                     </button>
