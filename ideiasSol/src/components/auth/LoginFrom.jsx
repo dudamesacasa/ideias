@@ -59,23 +59,28 @@ const LoginForm = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="Password"
-              className="form-control my-3"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              style={{ border: "none", background: "transparent", cursor: "pointer" }}
-            >
-              {showPassword ? "👁️" : "👁️"}
-            </button>
+            <div className="input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div className="input-group-append">
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="btn btn-outline-secondary"
+                  style={{ cursor: "pointer" }}
+                >
+                  {showPassword ? "👁️" : "👁️"}
+                </button>
+              </div>
+            </div>
 
-            <button className="btn btn-primary btn-block" type="submit">
+            <button className="btn btn-primary btn-block mt-3" type="submit">
               Submit
             </button>
           </form>
@@ -86,3 +91,4 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+  
