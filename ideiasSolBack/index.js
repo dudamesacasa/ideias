@@ -14,8 +14,8 @@ const rankingRouter = require("./ranking.js")
 const userLoginRouter = require("./userLogin.js")
 const employeeGroupRouter = require("./employeeGroups.js");
 const groupMemberRouter = require("./groupMembers.js");
-
-
+const frequencyRouter = require("./frequency.js");
+const groupMembersFrequencyRouter = require("./groupMembersFrequency.js");
 
 
 const app = express();
@@ -100,6 +100,9 @@ app.use("/getEmployeesGroup", employeeGroupRouter);
 app.use("/getGroupMembers", groupMemberRouter);
 app.use("/deleteGroupMembers", groupMemberRouter);
 
+app.use("/getGroupMembersFrequency", groupMembersFrequencyRouter);
+app.use("/insertFrequency", frequencyRouter);
+app.use("/getFrequency", frequencyRouter);
 
 db.connect((err) => {
   if (err) {

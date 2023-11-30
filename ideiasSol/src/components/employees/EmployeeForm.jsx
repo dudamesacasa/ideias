@@ -65,7 +65,7 @@ const EmployeeForm = () => {
           groupId: "",
           active: true,
           type: "",
-        });
+        }); 
 
         setSelectedDepartment(null);
         setSelectedGroup(null);

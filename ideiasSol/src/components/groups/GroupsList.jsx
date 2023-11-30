@@ -38,7 +38,7 @@ const GroupsList = () => {
       try {
         const response = await getGroups();
         if (response.status === 200) {
-          setGroups(response.data);
+          setGroups(response.data); 
         } else {
           console.error("Erro ao buscar grupos");
         }
@@ -46,7 +46,7 @@ const GroupsList = () => {
         console.error("Erro ao buscar grupos", error);
       }
     };
-
+ 
     fetchData();
 
     (async () => {

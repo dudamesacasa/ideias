@@ -16,6 +16,8 @@ import UsersList from "../components/users/UsersList";
 import IdeiasRanking from "../components/ranking/ranking";
 import Initial from "../components/initial/initial";
 import LoginForm from "../components/auth/LoginFrom";
+import FrequenciaControl from "../components/frequency/FrequencyForm";
+import AttendanceList from "../components/frequency/FrequencyList";
 
 const AppRoutes = () => {
   const Private = ({ children }) => {
@@ -29,24 +31,21 @@ const AppRoutes = () => {
       return <Navigate to="/login" />;
     }
 
-    console.log('role')
-    console.log(role)
-
     if (role === undefined) {
       return <Navigate to="/login" />;
     }
 
-    if (role === "GESTOR" && !["/ideiasList", "/ranking"].includes(window.location.pathname)) {
+    if (role === "GESTOR" && !["/ideiasList", "/ranking", "/frequencyList"].includes(window.location.pathname)) {
       return <Navigate to="/login" />;
     }
 
-    if (role === "GRUPO" && !["/insertIdeias", "/ideiasList", "/ranking"].includes(window.location.pathname)) {
+    if (role === "GRUPO" && !["/insertIdeias", "/ideiasList", "/ranking", "/frequency", , "/frequencyList"].includes(window.location.pathname)) {
       return <Navigate to="/login" />;
     }
 
     if (
       (role === "LÍDER" || role === "RELATOR") &&
-      !["/insertIdeias", "/ideiasList", "/ranking", "/frequency"].includes(window.location.pathname)
+      !["/insertIdeias", "/ideiasList", "/ranking", "/frequency", , "/frequencyList"].includes(window.location.pathname)
     ) {
       return <Navigate to="/login" />;
     }
@@ -165,6 +164,24 @@ const AppRoutes = () => {
             element={
               <Private>
                 <IdeiasRanking />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/frequency"
+            element={
+              <Private>
+                <FrequenciaControl />
+              </Private>
+            }
+          ></Route>
+          <Route
+            exact
+            path="/frequencyList"
+            element={
+              <Private>
+                <AttendanceList />
               </Private>
             }
           ></Route>
