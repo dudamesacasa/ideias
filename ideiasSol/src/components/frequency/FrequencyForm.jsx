@@ -47,8 +47,6 @@ const FrequenciaControl = () => {
       }
     });
 
-    console.log(updatedAttendanceData);
-
     try {
       const user = JSON.parse(localStorage.getItem("user"));
 

@@ -133,7 +133,6 @@ router.get("/", (req, res) => {
 router.delete("/:employeeId", (req, res) => {
   const employeeId = req.params.employeeId;
 
-  console.log("delete");
   const sqlDelete = "DELETE FROM employee WHERE employeeId = ?;";
 
   db.query(sqlDelete, employeeId, (err, result) => {

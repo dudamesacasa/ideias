@@ -50,8 +50,6 @@ router.put("/:editingIdeiaId", (req, res) => {
   const { user, ...editedData } = req.body.editedDataWithUser;
   const data = Object.values(editedData);
 
-  console.log('editedDataWithUser')
-  console.log(editedData)
   const sqlUpdateIdeia =
     "UPDATE ideias SET campaign = ?, status = ?, description = ?, benefits = ?, whereToDo = ?, performer_id = ?, investment = ?, attachments = ?  WHERE ideiaId = ?";
 
@@ -129,8 +127,6 @@ router.get("/", (req, res) => {
             }
 
             const placeholders = groupIds.map(() => "?").join(",");
-
-            console.log(placeholders);
 
             const sqlSelect = `
               SELECT ideiaId, campaign, title, status, description, benefits, whereToDo, department.name, investment, attachments

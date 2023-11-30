@@ -124,8 +124,7 @@ const GroupsList = () => {
 
 
   const handleEditMembers = (memberId) => {
-    console.log('memberId')
-    console.log(memberId)
+
     setEditingMemberId(memberId);
 
     const memberToEdit = members.find((member) => member.memberId === memberId);

@@ -66,7 +66,7 @@ const CustomHeader = () => {
                   <NavDropdown.Item as={Link} to="/ranking">
                     Ranking
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/frequency">
+                  <NavDropdown.Item as={Link} to="/frequencyList">
                     Controle de Frequencia
                   </NavDropdown.Item>
                 </NavDropdown>
@@ -84,7 +84,7 @@ const CustomHeader = () => {
                   <NavDropdown.Item as={Link} to="/ranking">
                     Ranking
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/frequency">
+                  <NavDropdown.Item as={Link} to="/frequencyList">
                     Controle de Frequencia
                   </NavDropdown.Item>
                 </NavDropdown>
@@ -123,7 +123,7 @@ const CustomHeader = () => {
                   <NavDropdown.Item as={Link} to="/ranking">
                     Ranking
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/frequency">
+                  <NavDropdown.Item as={Link} to="/frequencyList">
                     Controle de Frequencia
                   </NavDropdown.Item>
                 </NavDropdown>

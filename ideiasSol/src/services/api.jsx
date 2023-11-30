@@ -130,9 +130,6 @@ export const insertFrequency = async (meetingDate, attendanceData, user) => {
 };
 
 export const getFrequency = async (meetingDate, user) => {
-  console.log("chegou na api");
-  console.log(meetingDate);
-  console.log(user);
   return api.get("/getFrequency", {
     params: {
       meetingDate,

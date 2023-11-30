@@ -42,7 +42,6 @@ const IdeiaForm = () => {
     (async () => {
       const response = await getDepartments();
       setDepartmentList(response.data);
-      // console.log(response.data);
       setLoading(false);
     })();
   }, []);
@@ -59,7 +58,6 @@ const IdeiaForm = () => {
 
       const response = await insertIdeia(formDataWithUser);
 
-      console.log(response)
       if (response.status === 200) {
         alert("Ideia inserida com sucesso!");
 

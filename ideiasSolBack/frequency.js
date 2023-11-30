@@ -75,9 +75,6 @@ router.get("/", (req, res) => {
   const meetingDate = req.query.meetingDate;
   const user = req.query.user;
 
-  console.log('meetingDate')
-  console.log(meetingDate)
-
   const sqlFindUser = `SELECT active, type, bond, user 
   from users where users.user = ?;`; 
 
@@ -105,8 +102,6 @@ router.get("/", (req, res) => {
           return;
         }
         res.status(200).json(result);
-        console.log('Result')
-        console.log(result)
       });
     });
   });

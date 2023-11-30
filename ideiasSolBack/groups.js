@@ -84,7 +84,6 @@ router.put("/:editingGroupId", (req, res) => {
 router.delete("/:groupId", (req, res) => { 
   const groupId = req.params.groupId;
 
-  console.log('delete')
   const sqlDelete =
     'DELETE FROM groupSol WHERE groupId = ?';
 

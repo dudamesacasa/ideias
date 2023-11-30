@@ -100,7 +100,6 @@ router.put("/:editingDepartmentId", (req, res) => {
 router.delete("/:departmentId", (req, res) => {
   const departmentId = req.params.departmentId;
 
-  console.log("delete");
   const sqlDelete = "DELETE FROM department WHERE departmentId = ?;";
 
   db.query(sqlDelete, departmentId, (err, result) => {

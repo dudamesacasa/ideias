@@ -31,7 +31,6 @@ router.get("/", (req, res) => {
 router.delete("/:memberId", (req, res) => {
   const memberId = req.params.memberId;
 
-  console.log("delete");
   const sqlDelete = "DELETE FROM groupMembers WHERE groupMembers.memberid = ?;";
 
   db.query(sqlDelete, memberId, (err, result) => {
