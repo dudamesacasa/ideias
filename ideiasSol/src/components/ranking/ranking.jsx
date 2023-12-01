@@ -32,7 +32,7 @@ function IdeiasRanking() {
             <tr>
               <th>Posição</th>
               <th>Departamento</th>
-              <th>Avatar</th>
+              {/* <th>Avatar</th> */}
               <th>Quantidade de Ideias</th>
             </tr>
           </thead>
@@ -41,9 +41,9 @@ function IdeiasRanking() {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{item.name}</td>
-                <td>
+                {/* <td>
                   <img src={item.avatar} alt="Avatar" width="50" height="50" />
-                </td>
+                </td> */}
                 <td>{item.qtd}</td>
               </tr>
             ))}
