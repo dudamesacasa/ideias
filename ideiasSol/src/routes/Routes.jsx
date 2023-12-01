@@ -39,7 +39,7 @@ const AppRoutes = () => {
       return <Navigate to="/login" />;
     }
 
-    if (role === "GRUPO" && !["/insertIdeias", "/ideiasList", "/ranking", "/frequency", , "/frequencyList"].includes(window.location.pathname)) {
+    if (role === "GRUPO" && !["/insertIdeias", "/ideiasList", "/ranking"].includes(window.location.pathname)) {
       return <Navigate to="/login" />;
     }
 

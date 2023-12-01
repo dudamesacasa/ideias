@@ -82,7 +82,6 @@ const IdeiasList = () => {
 
   const handleDelete = async (ideiaId) => {
     try {
-
       const confirmDelete = window.confirm(`Tem certeza que deseja excluir a ideia ${ideiaId}?`);
 
       if (!confirmDelete) {
@@ -162,6 +161,16 @@ const IdeiasList = () => {
       <div className="container mt-4">
         <h1 className="text-center">Lista de Ideias</h1>
         <div className="row">
+          {userType !== "ADMIN" && (
+            <div className="row mb-4">
+              <div className="col-md-12 text-right">
+                <Link to="/insertIdeias" className="btn btn-primary ">
+                  +
+                </Link>
+              </div>
+            </div>
+          )}
+
           {ideiasList.map((ideia) => (
             <div className="col-md-6" key={ideia.ideiaId}>
               <div className="card mb-4">

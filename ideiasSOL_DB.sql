@@ -1,8 +1,8 @@
 /*drop database ideiassol;*/
 
-create database ideiassol;
+create database ideiassol2;
 
-use ideiassol;
+use ideiassol2;
 
 create table department (
 	departmentId integer primary key auto_increment not null,
@@ -11,6 +11,7 @@ create table department (
     executioner tinyint not null,
     active tinyint not null
 );
+
 
 create table groupSol (
 	groupId integer primary key auto_increment not null,
@@ -23,6 +24,8 @@ create table groupSol (
     foreign key (departmentId) references department (departmentId)
 );
 
+
+
 create table employee(
 	employeeId integer primary key auto_increment not null,
     name varchar (100) not null,
@@ -30,7 +33,7 @@ create table employee(
     departmentId integer not null,
     groupId integer not null,
     active tinyint not null,
-    type varchar (10) not null,
+    type enum("GESTOR", "COLABORADOR") not null,
     
     foreign key (departmentId) references department (departmentId)
 );
@@ -51,9 +54,9 @@ create table users (
     password varchar (200) not null,
     active tinyint not null,
     type enum ('GESTOR', 'ADMIN', 'GRUPO', "LÍDER", "RELATOR") not null,
-    bond integer not null
-    
+    bond integer not null    
 );
+
 
 create table approvers (
 	approverId integer primary key not null,
@@ -67,9 +70,11 @@ create table employeeFrequency (
 	employeeId integer not null,
     meetingDate date not null,
     attendance tinyint not null,
+    groupId int not null,
     
     primary key (employeeId, meetingDate),     
-    foreign key (employeeId) references employee (employeeId)
+    foreign key (employeeId) references employee (employeeId),
+    foreign key (groupId) references groupSol (groupId)
 );
 
 create table ideias (
