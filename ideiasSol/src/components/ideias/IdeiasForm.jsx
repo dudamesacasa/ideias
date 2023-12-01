@@ -175,7 +175,7 @@ const IdeiaForm = () => {
               required
             />
           </div>
-          <div className="form-group p-2">
+          {/* <div className="form-group p-2">
             <label htmlFor="attachments">Anexos:</label>
             <input
               type="file"
@@ -184,7 +184,7 @@ const IdeiaForm = () => {
               onChange={handleChange}
               className="form-control-file"
             />
-          </div>
+          </div> */}
           <button type="submit" className="btn btn-primary">
             Adicionar Ideia
           </button>

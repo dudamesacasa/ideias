@@ -168,7 +168,8 @@ const IdeiasList = () => {
                 <div className="card-body">
                   <h2 className="card-title">{ideia.title}</h2>
                   <p className="card-text">
-                    <strong>ID:</strong> {ideia.ideiaId}
+                    <strong className="mt-4">ID:</strong> {ideia.ideiaId}
+                    <br />
                     {editingIdeiaId === ideia.ideiaId ? (
                       <>
                         <label htmlFor="editedCampaign">Campanha:</label>
@@ -236,7 +237,6 @@ const IdeiasList = () => {
                       </>
                     ) : (
                       <>
-                        <br />
                         <strong>Campanha:</strong> {ideia.campaign}
                         <br />
                         <strong>Status:</strong> {ideia.status}
@@ -250,8 +250,8 @@ const IdeiasList = () => {
                         <strong>Executor:</strong> {ideia.name}
                         <br />
                         <strong>Investimento:</strong> {ideia.investment}
-                        <br />
-                        <strong>Anexos:</strong> {ideia.attachments}
+                        {/* <br /> */}
+                        {/* <strong>Anexos:</strong> {ideia.attachments} */}
                       </>
                     )}
                   </p>
